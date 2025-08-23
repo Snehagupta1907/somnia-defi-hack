@@ -7,7 +7,6 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { Toaster } from '@/components/ui/toaster'
 
 const projectId = '684cdccc0de232f65a62603583571f5e'
-
 // 2. Create a metadata object - optional
 const metadata = {
   name: 'SwapdotSo',

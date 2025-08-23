@@ -14,6 +14,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/tokens", (req, res) => {
+    const tokenData = req.body;
+  
+    // quick validation
+    if (!tokenData.id || !tokenData.symbol || !tokenData.name) {
+      return res.status(400).json({ message: "Invalid token data" });
+    }
+  
+    // check duplicate
+    if (tokenList.find((t) => t.id === tokenData.id)) {
+      return res.status(400).json({ message: "Token already exists" });
+    }
+  
+    tokenList.push(tokenData);
+    res.status(201).json(tokenData);
+  });
+
   app.get("/api/tokens/:id", async (req, res) => {
     try {
       const token = await storage.getToken(req.params.id);
@@ -25,6 +42,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch token" });
     }
   });
+
+
 
   // Pool routes
   app.get("/api/pools", async (req, res) => {
