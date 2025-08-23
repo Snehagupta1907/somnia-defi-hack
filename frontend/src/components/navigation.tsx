@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRightLeft, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import WalletConnect from "@/components/wallet-connect";
+import  ConnectButton from "@/components/wallet-connect";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -52,7 +52,7 @@ export default function Navigation() {
           </div>
           
           {/* Wallet Connect */}
-          <WalletConnect />
+          <ConnectButton />
           
           {/* Mobile menu button */}
           <Button variant="ghost" className="md:hidden">
