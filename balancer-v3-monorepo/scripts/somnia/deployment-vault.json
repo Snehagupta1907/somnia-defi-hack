@@ -1,0 +1,11 @@
+{
+  "authorizer": "0x5a9825E0F656789E4d36be509a7455Aa02E3D27E",
+  "protocolFeeController": "0x44e386EEC515A67D132Bf385bD1E0317C3219279",
+  "vaultAdmin": "0x725E46Dfe9B6509C71774e4B10bbB0BdA5ADa650",
+  "vaultExtension": "0xA6c47fF9c534c90136AE906F3BC642F0E8CDfeeF",
+  "vault": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "predictedVaultAddress": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
+  "timestamp": 1755864471883,
+  "network": "50312"
+}

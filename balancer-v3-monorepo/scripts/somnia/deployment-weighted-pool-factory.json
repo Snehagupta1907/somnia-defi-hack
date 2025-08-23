@@ -1,0 +1,13 @@
+{
+  "weightedPoolFactory": "0xE2654a34B262aB6399F22a7A75981f2E79DEfbD1",
+  "vault": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "factoryConfig": {
+    "factoryVersion": "1.0.0",
+    "poolVersion": "1.0.0",
+    "pauseWindowDuration": 0
+  },
+  "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
+  "timestamp": 1755864916025,
+  "permissionsGranted": true,
+  "registerPoolActionId": "0x795bffa12af63f924f10d4abd5a70164e4cf1530ce7634ed27598456e048cd09"
+}

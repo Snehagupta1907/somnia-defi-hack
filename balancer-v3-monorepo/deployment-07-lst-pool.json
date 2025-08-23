@@ -1,0 +1,33 @@
+{
+  "authorizer": "0x40F3a57fCa2228F9791AF639C21d6459A1BD6cD4",
+  "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
+  "timestamp": 1755516354540,
+  "network": "10143",
+  "protocolFeeController": "0x1C289a025707893F58053fed95D59Fec00058cd4",
+  "predictedVaultAddress": "0x6738F4439638873b382b4663318De4C5be593094",
+  "vaultAdmin": "0xD53b2E48118Ef4A62666b065D45bE58107630717",
+  "vaultExtension": "0x842720bB497a97553502C8b0e408795cF7405a7f",
+  "vault": "0x6738F4439638873b382b4663318De4C5be593094",
+  "stablePoolFactory": "0x6E8b2a6b6Ba14CABF42Ac934A456eF373ca4d192",
+  "lstPool": "0x0aef4B9C7887D80C9CF3108ff07bAB7d23865CB8",
+  "lstTokens": {
+    "shMON": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+    "sMON": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+    "gMON": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+    "aprMON": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A"
+  },
+  "rateProviders": {
+    "shMON": "0x4156c42A73F8f4FA5Cdd5A3BB4840e33248Bd247",
+    "sMON": "0xAe3b6C92730f3321a19d30b58680D538A8Bb4b0A",
+    "gMON": "0x3C5184923589A81c52a9278f192a6B7Cf5bF7bB1",
+    "aprMON": "0x03AbF8FFee11b49EAC279C435A7513610e4e0E7f"
+  },
+  "poolConfig": {
+    "name": "Monad LST Stable Pool V4",
+    "symbol": "MLSTSP4",
+    "amplificationParameter": "100",
+    "swapFeePercentage": "400000000000000",
+    "enableDonation": true,
+    "disableUnbalancedLiquidity": false
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "timestamp": 1755518802712,
+  "results": [
+    {
+      "kind": "exactIn",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactIn": "500000000000000000",
+      "minOut": "500781697899407296",
+      "tx": "0xdf00b40846c37b62093e7ff795def410a56442cf4f23d65010cf28b8d1a50462",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0xdf00b40846c37b62093e7ff795def410a56442cf4f23d65010cf28b8d1a50462",
+      "block": 31507556
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactOut": "500000000000000000",
+      "maxIn": "503245794639318061",
+      "tx": "0x01b6e45e5849b39774c003dcfdb67118a903834a785d421371f45282a6684d06",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x01b6e45e5849b39774c003dcfdb67118a903834a785d421371f45282a6684d06",
+      "block": 31507570
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "exactIn": "500000000000000000",
+      "minOut": "485047352999671407",
+      "tx": "0x7489b4917c6919e1ab85efe052ae258659c8b3a936f78fff225ba0b3ebdd0aa4",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x7489b4917c6919e1ab85efe052ae258659c8b3a936f78fff225ba0b3ebdd0aa4",
+      "block": 31507581
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "exactOut": "500000000000000000",
+      "maxIn": "520965375641938931",
+      "tx": "0x92f1a264f9be9b9a5d858852d733a97114d17d81076cf60f4d14f50407c68337",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x92f1a264f9be9b9a5d858852d733a97114d17d81076cf60f4d14f50407c68337",
+      "block": 31507592
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "exactIn": "500000000000000000",
+      "minOut": "481782947248983437",
+      "tx": "0x5cf2d75b1a654ca2473f17819814123169a3cd57aca0751d18567f89cdd3f432",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x5cf2d75b1a654ca2473f17819814123169a3cd57aca0751d18567f89cdd3f432",
+      "block": 31507607
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "tokenOut": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "exactOut": "500000000000000000",
+      "maxIn": "527622443950259863",
+      "tx": "0xf5d15ae17a4fb75796844c2ac2659a0be527079ef0c51bc65c8398be59f2eced",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0xf5d15ae17a4fb75796844c2ac2659a0be527079ef0c51bc65c8398be59f2eced",
+      "block": 31507615
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactIn": "500000000000000000",
+      "minOut": "503619396406836096",
+      "tx": "0x133eb3c3515bcd47ca73c5f11c276debc4e2b53dffe393414c66b68c811eb7fc",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x133eb3c3515bcd47ca73c5f11c276debc4e2b53dffe393414c66b68c811eb7fc",
+      "block": 31507630
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactOut": "500000000000000000",
+      "maxIn": "505262691025640526",
+      "tx": "0xe8bd32b920940eb4ffa4104696eede601154835bb2969462c83b8e96881e1fa1",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0xe8bd32b920940eb4ffa4104696eede601154835bb2969462c83b8e96881e1fa1",
+      "block": 31507644
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "tokenOut": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "exactIn": "500000000000000000",
+      "minOut": "462743333211547989",
+      "tx": "0x374a4fbcc488d65c945ad299ed64c9439ed72668025ac1df080c0471dc3177ab",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x374a4fbcc488d65c945ad299ed64c9439ed72668025ac1df080c0471dc3177ab",
+      "block": 31507654
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "tokenOut": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "exactOut": "500000000000000000",
+      "maxIn": "1002658316243849648",
+      "tx": "0x88788598cffc44781a1761430d4d820435712c157a758d54de042eb7bb3297cd",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x88788598cffc44781a1761430d4d820435712c157a758d54de042eb7bb3297cd",
+      "block": 31507665
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "tokenOut": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "exactIn": "500000000000000000",
+      "minOut": "327167481031084023",
+      "tx": "0x6b03ebcdb41cc828a1b6170c1d7f88494e2d1f6c25b0bdd188de48ee45489bd3",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x6b03ebcdb41cc828a1b6170c1d7f88494e2d1f6c25b0bdd188de48ee45489bd3",
+      "block": 31507680
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactIn": "500000000000000000",
+      "minOut": "1107506963466671414",
+      "tx": "0x8707b793dc02a6be00499457ac12cbdfd9fe18de73844489b44380f5357a895d",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x8707b793dc02a6be00499457ac12cbdfd9fe18de73844489b44380f5357a895d",
+      "block": 31507704
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactOut": "500000000000000000",
+      "maxIn": "472648321307429547",
+      "tx": "0x30f13c77e8b74d907491717002a83177a42c6c66f0d012135f64471ac8409e9b",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x30f13c77e8b74d907491717002a83177a42c6c66f0d012135f64471ac8409e9b",
+      "block": 31507715
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactIn": "500000000000000000",
+      "minOut": "519759857687203083",
+      "tx": "0x41c550f1100bba937dac4e0b3944d83d8881971ebdc8429d518fd259d3872bba",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x41c550f1100bba937dac4e0b3944d83d8881971ebdc8429d518fd259d3872bba",
+      "block": 31507729
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactOut": "500000000000000000",
+      "maxIn": "487264443536985004",
+      "tx": "0x79813a7609add142e4c3ea4526b618962d40e1b4887cc09ecb53c555e858f7ba",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x79813a7609add142e4c3ea4526b618962d40e1b4887cc09ecb53c555e858f7ba",
+      "block": 31507740
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "tokenOut": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "exactIn": "500000000000000000",
+      "minOut": "449834055450385330",
+      "tx": "0x12d9e667b7e3fc76b176cd04aeabebab5d3640f25a8d1aaf8458832771cff657",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x12d9e667b7e3fc76b176cd04aeabebab5d3640f25a8d1aaf8458832771cff657",
+      "block": 31507756
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactIn": "500000000000000000",
+      "minOut": "547500991578683276",
+      "tx": "0x82acc8caa4fbc71cc031e3258948300797e00dba1015e8875c0ebce4936e4dd0",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x82acc8caa4fbc71cc031e3258948300797e00dba1015e8875c0ebce4936e4dd0",
+      "block": 31507771
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "tokenOut": "0x3a98250F98Dd388C211206983453837C8365BDc1",
+      "exactOut": "500000000000000000",
+      "maxIn": "493080248986326862",
+      "tx": "0xa1d2b081fd3c2986a92af7ef29430082c73f4db0161cea7b26ec2ca3804aa62f",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0xa1d2b081fd3c2986a92af7ef29430082c73f4db0161cea7b26ec2ca3804aa62f",
+      "block": 31507785
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactIn": "500000000000000000",
+      "minOut": "512323067838794313",
+      "tx": "0x3209f8edf7aadb362129180b9014ae7891621fceab2a9654ed15215eb07beccf",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x3209f8edf7aadb362129180b9014ae7891621fceab2a9654ed15215eb07beccf",
+      "block": 31507796
+    },
+    {
+      "kind": "exactOut",
+      "tokenIn": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "tokenOut": "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+      "exactOut": "500000000000000000",
+      "maxIn": "491058150345269425",
+      "tx": "0x2092d34acbf33dcac13c19c76e3d134d21854b2b179d7747bc96176af65f369f",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x2092d34acbf33dcac13c19c76e3d134d21854b2b179d7747bc96176af65f369f",
+      "block": 31507811
+    },
+    {
+      "kind": "exactIn",
+      "tokenIn": "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+      "tokenOut": "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+      "exactIn": "500000000000000000",
+      "minOut": "494384221669598295",
+      "tx": "0x1b0b319e06fa3d2e2f0bbe0982d699ac766266b50f0a641f02709b106c782b27",
+      "txUrl": "https://testnet.monadexplorer.com/tx/0x1b0b319e06fa3d2e2f0bbe0982d699ac766266b50f0a641f02709b106c782b27",
+      "block": 31507825
+    }
+  ]
+}

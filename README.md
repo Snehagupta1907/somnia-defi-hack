@@ -9,6 +9,7 @@ A modern decentralized exchange (DEX) platform built with React and Express.js, 
 - **Analytics Dashboard**: Comprehensive trading volume and TVL metrics
 - **Modern UI**: Glass morphism design with custom color palette
 - **Responsive Design**: Mobile-first approach with proper breakpoints
+- **Flexible Storage**: Support for both MongoDB and in-memory storage
 
 ## Tech Stack
 
@@ -22,7 +23,7 @@ A modern decentralized exchange (DEX) platform built with React and Express.js, 
 ### Backend
 - Node.js with Express.js
 - TypeScript with ES modules
-- Drizzle ORM with PostgreSQL
+- **MongoDB with Mongoose** (primary) or **In-memory storage** (fallback)
 - RESTful API architecture
 
 ## Color Palette
@@ -45,10 +46,14 @@ cd nexswap-dex
 npm install
 ```
 
-3. Set up environment variables:
+3. Set up environment variables (optional):
 ```bash
-cp .env.example .env
-# Add your database URL and other required variables
+# For MongoDB support, set MONGO_URI
+export MONGO_URI="mongodb://localhost:27017/somnia-defi"
+# Or for MongoDB Atlas:
+export MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/somnia-defi"
+
+# If no MONGO_URI is set, the app will use in-memory storage
 ```
 
 4. Run the development server:
@@ -57,6 +62,18 @@ npm run dev
 ```
 
 The application will be available at `http://localhost:5000`
+
+## Database Setup
+
+### MongoDB (Recommended)
+The app supports MongoDB as the primary database. Set the `MONGO_URI` environment variable to connect:
+
+```bash
+export MONGO_URI="mongodb://localhost:27017/somnia-defi"
+```
+
+### In-Memory Storage (Default)
+If no MongoDB connection is configured, the app automatically falls back to in-memory storage with mock data.
 
 ## Project Structure
 
@@ -70,8 +87,12 @@ The application will be available at `http://localhost:5000`
 ├── server/                # Express backend
 │   ├── index.ts          # Server entry point
 │   ├── routes.ts         # API routes
-│   └── storage.ts        # Data layer abstraction
+│   ├── storage.ts        # Data layer abstraction
+│   ├── mongo-storage.ts  # MongoDB implementation
+│   └── db.ts             # Database connection
 ├── shared/               # Shared types and schemas
+│   ├── schema.ts         # Drizzle/PostgreSQL schema (legacy)
+│   └── mongo-schema.ts   # MongoDB schema
 └── components.json       # shadcn/ui configuration
 ```
 

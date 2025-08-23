@@ -220,4 +220,24 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Conditionally export storage based on environment
+let storage: IStorage;
+
+if (process.env.MONGO_URI) {
+  // Import MongoDB storage dynamically to avoid issues when MONGO_URI is not set
+  import('./mongo-storage').then(({ MongoStorage }) => {
+    storage = new MongoStorage();
+  }).catch(() => {
+    console.warn('Failed to load MongoDB storage, falling back to in-memory storage');
+    storage = new MemStorage();
+  });
+} else {
+  storage = new MemStorage();
+}
+
+// Fallback to in-memory storage if MongoDB fails to load
+if (!storage) {
+  storage = new MemStorage();
+}
+
+export { storage };

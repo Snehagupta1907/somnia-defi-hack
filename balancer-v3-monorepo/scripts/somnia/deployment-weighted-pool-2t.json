@@ -1,0 +1,46 @@
+{
+  "weightedPoolFactory": "0xE2654a34B262aB6399F22a7A75981f2E79DEfbD1",
+  "vault": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "factoryConfig": {
+    "factoryVersion": "1.0.0",
+    "poolVersion": "1.0.0",
+    "pauseWindowDuration": 0
+  },
+  "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
+  "timestamp": 1755878227364,
+  "permissionsGranted": true,
+  "registerPoolActionId": "0x795bffa12af63f924f10d4abd5a70164e4cf1530ce7634ed27598456e048cd09",
+  "somniaWeightedPool": "0xE8Cb5486c75389eA2ecC1B3fF663589271466A2e",
+  "somniaTokens": {
+    "USDTG": "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
+    "WSTT": "0xF22eF0085f6511f70b01a68F360dCc56261F768a"
+  },
+  "poolConfig": {
+    "name": "Somnia USDTG-WSTT Weighted Pool",
+    "symbol": "SOMNIA-WP-2T",
+    "swapFeePercentage": "3000000000000000",
+    "enableDonation": true,
+    "disableUnbalancedLiquidity": false,
+    "weights": [
+      "500000000000000000",
+      "500000000000000000"
+    ]
+  },
+  "weth": "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
+  "permit2": "0xb012c6B0f0Ce47eB7Da3B542A18aBBa355458826",
+  "router": "0xEF90098a887d546C8e9ca13e24D3a310004679bf",
+  "initialLiquidityAdded": true,
+  "initialLiquidityAmounts": {
+    "USDTG": "500000000000000000",
+    "WSTT": "500000000000000000"
+  },
+  "poolInitialized": true,
+  "lastSwap": {
+    "tokenIn": "USDTG",
+    "tokenOut": "WSTT",
+    "amountIn": "100000000000000000",
+    "amountOut": "83124895781223945",
+    "exchangeRate": "0.8312489578122395",
+    "timestamp": 1755878227364
+  }
+}
