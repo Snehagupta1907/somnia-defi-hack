@@ -21,7 +21,7 @@ const PERMIT2_ABI = [
 const MAX_UINT48 = 281474976710655n; // 2^48 - 1
 
 function makeTxUrl(hash: string): string {
-  return `https://testnet.monadexplorer.com/tx/${hash}`;
+  return `https://shannon-explorer.somnia.network/tx/${hash}`;
 }
 
 async function main() {

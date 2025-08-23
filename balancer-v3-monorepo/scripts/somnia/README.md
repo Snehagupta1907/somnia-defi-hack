@@ -28,6 +28,15 @@ The scripts must be run in the following order:
 6. **`04-swap-tokens.ts`** - Performs a test swap (0.1 USDTG → WSTT)
    - Requires liquidity from step 5
 
+7. **`05-remove-liquidity.ts`** - Removes liquidity from the pool
+   - Requires liquidity to be present in the pool
+
+8. **`06-add-more-liquidity.ts`** - Adds balanced liquidity to the pool
+   - Adds equal amounts of all tokens in the pool
+
+9. **`07-add-liquidity-single-token.ts`** - Adds liquidity for a single token
+   - Adds liquidity for only one specific token
+
 ## Token Configuration
 
 The weighted pool will be created with these tokens:
@@ -99,6 +108,77 @@ npx hardhat run scripts/somnia/04-swap-tokens.ts --network somnia
 ```
 
 This will perform a test swap of 0.1 USDTG for WSTT.
+
+### Step 7: Remove Liquidity
+
+```bash
+# Remove liquidity proportionally (default)
+npx hardhat run scripts/somnia/05-remove-liquidity.ts --network somnia
+
+# Remove liquidity for a specific token (exact amount out)
+MODE=singleExactOut TOKEN_KEY=USDTG AMOUNT_TOKEN=0.25 npx hardhat run scripts/somnia/05-remove-liquidity.ts --network somnia
+
+# Remove liquidity with specific BPT amount (exact amount in)
+MODE=singleExactIn TOKEN_KEY=WSTT AMOUNT_BPT=0.3 npx hardhat run scripts/somnia/05-remove-liquidity.ts --network somnia
+
+### Step 8: Add More Liquidity
+
+```bash
+# Add balanced liquidity (equal amounts of all tokens)
+npx hardhat run scripts/somnia/06-add-more-liquidity.ts --network somnia
+
+# Add balanced liquidity with custom amount per token
+AMOUNT_PER_TOKEN=2.0 npx hardhat run scripts/somnia/06-add-more-liquidity.ts --network somnia
+
+### Step 9: Add Single Token Liquidity
+
+```bash
+# Add liquidity for USDTG only (default amount 1.0)
+TOKEN_KEY=USDTG npx hardhat run scripts/somnia/07-add-liquidity-single-token.ts --network somnia
+
+# Add liquidity for WSTT only with custom amount
+TOKEN_KEY=WSTT AMOUNT=1.5 npx hardhat run scripts/somnia/07-add-liquidity-single-token.ts --network somnia
+
+# Add liquidity for specific token address
+TOKEN_ADDR=0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76 AMOUNT=0.5 npx hardhat run scripts/somnia/07-add-liquidity-single-token.ts --network somnia
+```
+
+## Liquidity Management Modes
+
+### Liquidity Removal Modes
+
+The `05-remove-liquidity.ts` script supports three modes:
+
+1. **`proportional`** (default): Removes liquidity proportionally from all tokens in the pool
+   - Use `AMOUNT_BPT` to specify how much BPT to burn
+   - All tokens are withdrawn in proportion to their pool weights
+
+2. **`singleExactIn`**: Removes liquidity for a specific token by burning a specific amount of BPT
+   - Use `AMOUNT_BPT` to specify BPT amount to burn
+   - Use `TOKEN_KEY` (USDTG/WSTT) or `TOKEN_ADDR` to specify which token to receive
+   - Calculates slippage tolerance automatically
+
+3. **`singleExactOut`**: Removes liquidity to receive a specific amount of a token
+   - Use `AMOUNT_TOKEN` to specify exact token amount to receive
+   - Use `TOKEN_KEY` (USDTG/WSTT) or `TOKEN_ADDR` to specify which token to receive
+   - Automatically calculates required BPT amount with slippage tolerance
+
+### Liquidity Addition Modes
+
+The liquidity addition scripts support two modes:
+
+1. **`06-add-more-liquidity.ts`**: Adds balanced liquidity to the pool
+   - Adds equal amounts of all tokens in the pool
+   - Use `AMOUNT_PER_TOKEN` environment variable to specify amount per token
+   - Automatically handles Permit2 approvals for all tokens
+   - Uses `addLiquidityProportional` for weighted pools
+
+2. **`07-add-liquidity-single-token.ts`**: Adds liquidity for a single token
+   - Calculates proportional amounts for all tokens to maintain pool weights
+   - Use `TOKEN_KEY` (USDTG/WSTT) or `TOKEN_ADDR` to specify which token
+   - Use `AMOUNT` environment variable to specify token amount
+   - Automatically calculates required amounts for other tokens
+   - Uses `addLiquidityProportional` for weighted pools
 
 ## Important Notes
 

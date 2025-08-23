@@ -1,16 +1,14 @@
 {
-  "weightedPoolFactory": "0xE2654a34B262aB6399F22a7A75981f2E79DEfbD1",
-  "vault": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "weightedPoolFactory": "0x12e8a55454d8b46ac1C710b6Ca3844B5Bf89602B",
+  "vault": "0xf32ee0AB16384c421865b1c3D5A39F5967f755cE",
   "factoryConfig": {
     "factoryVersion": "1.0.0",
     "poolVersion": "1.0.0",
     "pauseWindowDuration": 0
   },
   "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
-  "timestamp": 1755878227364,
-  "permissionsGranted": true,
-  "registerPoolActionId": "0x795bffa12af63f924f10d4abd5a70164e4cf1530ce7634ed27598456e048cd09",
-  "somniaWeightedPool": "0xE8Cb5486c75389eA2ecC1B3fF663589271466A2e",
+  "timestamp": 1755950820827,
+  "somniaWeightedPool": "0xd0df2ef8853Dc9760eBeF828BE431E85Ff726432",
   "somniaTokens": {
     "USDTG": "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
     "WSTT": "0xF22eF0085f6511f70b01a68F360dCc56261F768a"
@@ -28,19 +26,11 @@
   },
   "weth": "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
   "permit2": "0xb012c6B0f0Ce47eB7Da3B542A18aBBa355458826",
-  "router": "0xEF90098a887d546C8e9ca13e24D3a310004679bf",
+  "router": "0x154Bbfc00c71974CA58e2B489f19cFb167dabd3E",
   "initialLiquidityAdded": true,
   "initialLiquidityAmounts": {
     "USDTG": "500000000000000000",
     "WSTT": "500000000000000000"
   },
-  "poolInitialized": true,
-  "lastSwap": {
-    "tokenIn": "USDTG",
-    "tokenOut": "WSTT",
-    "amountIn": "100000000000000000",
-    "amountOut": "83124895781223945",
-    "exchangeRate": "0.8312489578122395",
-    "timestamp": 1755878227364
-  }
+  "poolInitialized": true
 }

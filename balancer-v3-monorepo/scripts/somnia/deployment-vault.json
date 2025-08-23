@@ -1,11 +1,11 @@
 {
-  "authorizer": "0x5a9825E0F656789E4d36be509a7455Aa02E3D27E",
-  "protocolFeeController": "0x44e386EEC515A67D132Bf385bD1E0317C3219279",
-  "vaultAdmin": "0x725E46Dfe9B6509C71774e4B10bbB0BdA5ADa650",
-  "vaultExtension": "0xA6c47fF9c534c90136AE906F3BC642F0E8CDfeeF",
-  "vault": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
-  "predictedVaultAddress": "0x1df7D077ec010C3ecFb18Aca970f41D79dB53890",
+  "authorizer": "0x135e402690635187Cf469952c9d575016c9e60e6",
+  "protocolFeeController": "0x88f2e4DBf5E1f2fc0E6749C616F269327BE8515B",
+  "vaultAdmin": "0x208Ea39fDaB5c46b6B1Af25867AcC62B0Cf63B6C",
+  "vaultExtension": "0x6d40C8e29c02d52f5efab434E9FB69C2320eD85d",
+  "vault": "0xf32ee0AB16384c421865b1c3D5A39F5967f755cE",
+  "predictedVaultAddress": "0xf32ee0AB16384c421865b1c3D5A39F5967f755cE",
   "deployer": "0xcBe600349CE4cF89842Bc371E4a4062140CDCCcD",
-  "timestamp": 1755864471883,
+  "timestamp": 1755950619217,
   "network": "50312"
 }
