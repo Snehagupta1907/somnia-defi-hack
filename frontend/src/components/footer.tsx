@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import Link from "next/link";
 import { ArrowRightLeft, Twitter, Github, MessageCircle, Send } from "lucide-react";
 
 export default function Footer() {
@@ -58,13 +58,11 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
             {/* Logo and Description */}
             <div className="col-span-2 md:col-span-2">
-              <Link href="/">
-                <a className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
-                    <ArrowRightLeft className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-xl font-bold gradient-text">NexSwap</span>
-                </a>
+              <Link href="/" className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
+                  <ArrowRightLeft className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-xl font-bold gradient-text">NexSwap</span>
               </Link>
               <p className="text-gray-600 text-sm mb-6 max-w-sm">
                 The next generation decentralized exchange with advanced liquidity pools and maximum earning potential.
@@ -93,17 +91,16 @@ export default function Footer() {
                   {section.links.map((link) => (
                     <li key={link.label}>
                       {link.href.startsWith('/') ? (
-                        <Link href={link.href}>
-                          <a className="text-gray-600 hover:text-gradient-middle transition-colors duration-200 text-sm">
-                            {link.label}
-                          </a>
-                        </Link>
-                      ) : (
-                        <a
+                        <Link 
                           href={link.href}
                           className="text-gray-600 hover:text-gradient-middle transition-colors duration-200 text-sm"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        >
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <a 
+                          href={link.href}
+                          className="text-gray-600 hover:text-gradient-middle transition-colors duration-200 text-sm"
                         >
                           {link.label}
                         </a>
@@ -116,18 +113,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Footer */}
         <div className="border-t border-gray-200 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-gray-500">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-500 text-sm">
               © {currentYear} NexSwap. All rights reserved.
-            </div>
-            <div className="flex items-center space-x-6 text-sm text-gray-500">
-              <span>Built on Ethereum</span>
-              <span className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>All systems operational</span>
-              </span>
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <a href="#" className="text-gray-500 hover:text-gray-700 text-sm">
+                Terms
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-700 text-sm">
+                Privacy
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-700 text-sm">
+                Cookies
+              </a>
             </div>
           </div>
         </div>
