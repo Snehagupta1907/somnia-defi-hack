@@ -1,13 +1,13 @@
-# Contributing to NexSwap
+# Contributing to SwapDotSo
 
-Thank you for your interest in contributing to NexSwap! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to SwapDotSo! This document provides guidelines for contributing to the project.
 
 ## Development Setup
 
 1. **Fork and Clone**
    ```bash
-   git clone https://github.com/your-username/nexswap-dex.git
-   cd nexswap-dex
+   git clone https://github.com/your-username/SwapDotSo-dex.git
+   cd SwapDotSo-dex
    ```
 
 2. **Install Dependencies**

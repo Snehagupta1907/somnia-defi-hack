@@ -62,7 +62,7 @@ export default function Footer() {
                 <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
                   <ArrowRightLeft className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xl font-bold gradient-text">NexSwap</span>
+                <span className="text-xl font-bold gradient-text">SwapDotSo</span>
               </Link>
               <p className="text-gray-600 text-sm mb-6 max-w-sm">
                 The next generation decentralized exchange with advanced liquidity pools and maximum earning potential.
@@ -117,7 +117,7 @@ export default function Footer() {
         <div className="border-t border-gray-200 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm">
-              © {currentYear} NexSwap. All rights reserved.
+              © {currentYear} SwapDotSo. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-500 hover:text-gray-700 text-sm">

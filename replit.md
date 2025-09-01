@@ -1,8 +1,8 @@
-# NexSwap DEX Platform
+# SwapDotSo DEX Platform
 
 ## Overview
 
-NexSwap is a decentralized exchange (DEX) platform built as a full-stack TypeScript application. It provides token swapping, liquidity pool management, and analytics functionality with support for both Balancer and Uniswap V3 pool types. The platform features a modern React frontend with a Node.js/Express backend and PostgreSQL database integration.
+SwapDotSo is a decentralized exchange (DEX) platform built as a full-stack TypeScript application. It provides token swapping, liquidity pool management, and analytics functionality with support for both Balancer and Uniswap V3 pool types. The platform features a modern React frontend with a Node.js/Express backend and PostgreSQL database integration.
 
 ## User Preferences
 

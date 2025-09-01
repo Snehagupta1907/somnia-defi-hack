@@ -102,7 +102,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-center mb-16 text-color-black"
           >
-            Why Choose NexSwap?
+            Why Choose SwapDotSo?
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -145,7 +145,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-xl text-text-secondary mb-12"
           >
-            Join thousands of users already trading on NexSwap
+            Join thousands of users already trading on SwapDotSo
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

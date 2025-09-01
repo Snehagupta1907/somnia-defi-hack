@@ -8,7 +8,7 @@ import AppKitProvider from '@/components/client-providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'NexSwap DEX Platform',
+  title: 'SwapDotSo DEX Platform',
   description: 'A modern decentralized exchange platform',
 }
 

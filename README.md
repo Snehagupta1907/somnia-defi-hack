@@ -1,4 +1,4 @@
-# NexSwap DEX Platform
+# SwapDotSo DEX Platform
 
 A modern decentralized exchange (DEX) platform built with React and Express.js, featuring token swapping, liquidity pool management, and comprehensive analytics.
 
@@ -38,7 +38,7 @@ A modern decentralized exchange (DEX) platform built with React and Express.js, 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd nexswap-dex
+cd SwapDotSo-dex
 ```
 
 2. Install dependencies:

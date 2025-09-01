@@ -8,13 +8,13 @@ export default function Docs() {
     {
       icon: BookOpen,
       title: "Getting Started",
-      description: "Learn the basics of using NexSwap for token swapping and liquidity provision.",
+      description: "Learn the basics of using SwapDotSo for token swapping and liquidity provision.",
       link: "#getting-started"
     },
     {
       icon: FileText,
       title: "API Reference",
-      description: "Complete API documentation for developers building on top of NexSwap.",
+      description: "Complete API documentation for developers building on top of SwapDotSo.",
       link: "#api-reference"
     },
     {
@@ -38,7 +38,7 @@ export default function Docs() {
     {
       icon: Zap,
       title: "Performance",
-      description: "Understand how NexSwap achieves high performance and low fees.",
+      description: "Understand how SwapDotSo achieves high performance and low fees.",
       link: "#performance"
     }
   ];
@@ -53,7 +53,7 @@ export default function Docs() {
       >
         <h1 className="text-4xl font-bold mb-4 text-text-primary">Documentation</h1>
         <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-          Everything you need to know about using NexSwap, from basic operations to advanced features.
+          Everything you need to know about using SwapDotSo, from basic operations to advanced features.
         </p>
       </motion.div>
 
@@ -90,7 +90,7 @@ export default function Docs() {
         <div className="glass-morphism p-6 rounded-xl">
           <h3 className="text-xl font-semibold mb-4 text-text-primary">1. Connect Your Wallet</h3>
           <p className="text-text-secondary mb-4">
-            Start by connecting your Web3 wallet (MetaMask, WalletConnect, etc.) to NexSwap.
+            Start by connecting your Web3 wallet (MetaMask, WalletConnect, etc.) to SwapDotSo.
           </p>
           
           <h3 className="text-xl font-semibold mb-4 text-text-primary">2. Swap Tokens</h3>
