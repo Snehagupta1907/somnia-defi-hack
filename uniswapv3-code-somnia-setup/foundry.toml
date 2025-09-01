@@ -1,0 +1,16 @@
+[profile.default]
+src = 'src'
+out = 'out'
+libs = ['lib']
+fs_permissions = [{access='read', path='.'}]
+viaIR = true
+optimizer = true
+solc = "0.8.30"
+
+
+[rpc_endpoints]
+somnia = "http://dream-rpc.somnia.network"
+monad  = "https://testnet-rpc.monad.xyz"
+
+[profile.wallets]
+private_key = "0x53db16726ccb5aaee4f8c280895f66adcfe1c310c893433d49a3897a877c293a"
