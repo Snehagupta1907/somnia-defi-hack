@@ -1,9 +1,12 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { BookOpen, FileText, Code, Users, Shield, Zap } from "lucide-react";
+import { BookOpen, FileText, Code, Users, Shield, Zap, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function Docs() {
+  const [query, setQuery] = useState("");
+
   const sections = [
     {
       icon: BookOpen,
@@ -43,105 +46,95 @@ export default function Docs() {
     }
   ];
 
+  const filteredSections = sections.filter(section =>
+    section.title.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto mt-[10%] px-6 py-12">
+      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-12"
+        className="text-center mb-16"
       >
-        <h1 className="text-4xl font-bold mb-4 text-text-primary">Documentation</h1>
-        <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-          Everything you need to know about using SwapDotSo, from basic operations to advanced features.
+        <h1 className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+          SwapDotSo Docs
+        </h1>
+        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          Everything you need to integrate, build, and scale with SwapDotSo.
         </p>
+        <div className="mt-8 flex items-center justify-center">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search docs..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
+        </div>
       </motion.div>
 
-      {/* Documentation Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {sections.map((section, index) => (
+      {/* Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        {filteredSections.map((section, index) => (
           <motion.div
             key={section.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="glass-morphism p-6 rounded-xl hover-lift cursor-pointer"
+            className="glass-morphism p-6 rounded-xl hover:scale-105 transform transition cursor-pointer shadow-md"
             onClick={() => document.querySelector(section.link)?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <div className="w-12 h-12 rounded-lg gradient-bg flex items-center justify-center mb-4">
-              <section.icon className="w-6 h-6 text-white" />
+            <div className="w-14 h-14 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center mb-4">
+              <section.icon className="w-7 h-7 text-white" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-text-primary">{section.title}</h3>
-            <p className="text-text-secondary">{section.description}</p>
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">{section.title}</h3>
+            <p className="text-gray-600">{section.description}</p>
           </motion.div>
         ))}
       </div>
 
-      {/* Getting Started Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        id="getting-started"
-        className="mb-16"
-      >
-        <h2 className="text-3xl font-bold mb-6 text-text-primary">Getting Started</h2>
-        <div className="glass-morphism p-6 rounded-xl">
-          <h3 className="text-xl font-semibold mb-4 text-text-primary">1. Connect Your Wallet</h3>
-          <p className="text-text-secondary mb-4">
-            Start by connecting your Web3 wallet (MetaMask, WalletConnect, etc.) to SwapDotSo.
+      {/* Example Docs Sections */}
+      <motion.section id="getting-started" className="mb-16">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900">Getting Started</h2>
+        <div className="glass-morphism p-6 rounded-xl space-y-6">
+          <p className="text-gray-600">
+            Follow these steps to start using SwapDotSo:
           </p>
-          
-          <h3 className="text-xl font-semibold mb-4 text-text-primary">2. Swap Tokens</h3>
-          <p className="text-text-secondary mb-4">
-            Navigate to the Swap page and select the tokens you want to exchange. Set your slippage tolerance and confirm the transaction.
-          </p>
-          
-          <h3 className="text-xl font-semibold mb-4 text-text-primary">3. Provide Liquidity</h3>
-          <p className="text-text-secondary mb-4">
-            Create or join liquidity pools to earn trading fees and rewards. Choose between Balancer and Uniswap V3 pool types.
-          </p>
-          
-          <h3 className="text-xl font-semibold mb-4 text-text-primary">4. Monitor Performance</h3>
-          <p className="text-text-secondary">
-            Track your portfolio performance, trading history, and earnings through our comprehensive analytics dashboard.
-          </p>
+          <ol className="list-decimal list-inside text-gray-700 space-y-2">
+            <li>Connect your Web3 wallet (MetaMask, WalletConnect, etc.)</li>
+            <li>Swap tokens with customizable slippage.</li>
+            <li>Provide liquidity and earn rewards.</li>
+            <li>Track performance in the analytics dashboard.</li>
+          </ol>
         </div>
       </motion.section>
 
-      {/* API Reference Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        id="api-reference"
-        className="mb-16"
-      >
-        <h2 className="text-3xl font-bold mb-6 text-text-primary">API Reference</h2>
+      <motion.section id="api-reference" className="mb-16">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900">API Reference</h2>
         <div className="glass-morphism p-6 rounded-xl">
-          <h3 className="text-xl font-semibold mb-4 text-text-primary">Endpoints</h3>
-          <div className="space-y-4">
+          <h3 className="text-xl font-semibold mb-4">Endpoints</h3>
+          <div className="space-y-6 text-gray-700">
             <div>
-              <code className="bg-gray-100 px-2 py-1 rounded text-sm">GET /api/tokens</code>
-              <p className="text-text-secondary mt-1">Get all available tokens</p>
+              <code className="bg-gray-900 text-green-300 px-2 py-1 rounded text-sm">GET /api/tokens</code>
+              <p>Retrieve all available tokens</p>
             </div>
             <div>
-              <code className="bg-gray-100 px-2 py-1 rounded text-sm">GET /api/pools</code>
-              <p className="text-text-secondary mt-1">Get all liquidity pools</p>
+              <code className="bg-gray-900 text-green-300 px-2 py-1 rounded text-sm">GET /api/pools</code>
+              <p>Fetch liquidity pools</p>
             </div>
             <div>
-              <code className="bg-gray-100 px-2 py-1 rounded text-sm">POST /api/swaps</code>
-              <p className="text-text-secondary mt-1">Execute a token swap</p>
-            </div>
-            <div>
-              <code className="bg-gray-100 px-2 py-1 rounded text-sm">GET /api/analytics</code>
-              <p className="text-text-secondary mt-1">Get platform analytics</p>
+              <code className="bg-gray-900 text-green-300 px-2 py-1 rounded text-sm">POST /api/swaps</code>
+              <p>Execute a token swap</p>
             </div>
           </div>
         </div>
       </motion.section>
     </div>
   );
-} 
+}

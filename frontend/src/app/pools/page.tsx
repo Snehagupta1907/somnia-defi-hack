@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PoolCard from "@/components/pool-card";
 import CreatePoolModal from "@/components/modals/create-pool-modal";
@@ -27,7 +33,9 @@ interface Pool {
 export default function Pools() {
   const [isCreatePoolModalOpen, setIsCreatePoolModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  
+  const [selectedChain, setSelectedChain] = useState("all");
+  const [sortBy, setSortBy] = useState("tvl");
+
   const { data: balancerPools, isLoading: balancerLoading } = useQuery<Pool[]>({
     queryKey: ["/api/pools", "balancer"],
     queryFn: async () => {
@@ -46,25 +54,74 @@ export default function Pools() {
     },
   });
 
-  const filterPools = (pools: Pool[] | undefined) => {
+  const filterAndSortPools = (pools: Pool[] | undefined) => {
     if (!pools) return [];
-    if (!searchQuery) return pools;
-    return pools.filter(pool => 
-      pool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (Array.isArray(pool.tokens) && pool.tokens.some((token: any) => 
-        token.symbol?.toLowerCase().includes(searchQuery.toLowerCase())
-      ))
+    let filtered = pools;
+
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter(pool =>
+        pool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        pool.tokens.some(token =>
+          token.symbol?.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+
+    // Chain filter (placeholder, adapt when pools have chain field)
+    if (selectedChain !== "all") {
+      filtered = filtered.filter(pool => pool.type.toLowerCase().includes(selectedChain));
+    }
+
+    // Sorting
+    filtered = [...filtered].sort((a, b) => {
+      if (sortBy === "tvl") return Number(b.tvl) - Number(a.tvl);
+      if (sortBy === "apr") return Number(b.apr) - Number(a.apr);
+      if (sortBy === "volume") return Number(b.volume24h) - Number(a.volume24h);
+      return 0;
+    });
+
+    return filtered;
+  };
+
+  const renderPools = (pools: Pool[] | undefined, loading: boolean, label: string) => {
+    if (loading) {
+      return <div className="text-center py-8 text-gray-500">Loading {label} pools...</div>;
+    }
+
+    const filtered = filterAndSortPools(pools);
+    if (!filtered.length) {
+      return <div className="text-center py-8 text-gray-400">No pools found</div>;
+    }
+
+    return (
+      <motion.div
+        layout
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+        {filtered.map((pool, i) => (
+          <motion.div
+            key={pool.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+          >
+            <PoolCard pool={pool} />
+          </motion.div>
+        ))}
+      </motion.div>
     );
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 mt-[10%]">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-bold text-text-primary"
+          className="text-4xl font-bold text-text-primary"
         >
           Liquidity Pools
         </motion.h1>
@@ -83,15 +140,16 @@ export default function Pools() {
         </motion.div>
       </div>
       
-      {/* Search and Filters */}
+      {/* Search & Filters */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
         className="glass-morphism rounded-xl p-4 mb-8"
       >
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          {/* Search */}
+          <div className="flex-1 relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               type="text"
@@ -101,15 +159,29 @@ export default function Pools() {
               className="pl-10 bg-white/80 backdrop-blur border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <Select>
-            <SelectTrigger className="w-[180px] bg-white/80 backdrop-blur border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+
+          {/* Chain Filter */}
+          <Select value={selectedChain} onValueChange={setSelectedChain}>
+            <SelectTrigger className="w-[160px] bg-white/80 border-gray-200">
               <SelectValue placeholder="All Chains" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Chains</SelectItem>
-              <SelectItem value="ethereum">Ethereum</SelectItem>
-              <SelectItem value="polygon">Polygon</SelectItem>
-              <SelectItem value="arbitrum">Arbitrum</SelectItem>
+              <SelectItem value="ethereum">Somnia Testnet</SelectItem>
+              <SelectItem value="polygon">Somnia Mainnet</SelectItem>
+       
+            </SelectContent>
+          </Select>
+
+          {/* Sort */}
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-[160px] bg-white/80 border-gray-200">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="tvl">TVL</SelectItem>
+              <SelectItem value="apr">APR</SelectItem>
+              <SelectItem value="volume">Volume</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -123,39 +195,17 @@ export default function Pools() {
           <TabsTrigger value="uniswap">Uniswap V3</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filterPools(balancerPools)?.map((pool) => (
-              <PoolCard key={pool.id} pool={pool} />
-            ))}
-            {filterPools(uniswapPools)?.map((pool) => (
-              <PoolCard key={pool.id} pool={pool} />
-            ))}
-          </div>
+        <TabsContent value="all">
+          {renderPools(balancerPools, balancerLoading, "Balancer")}
+          {renderPools(uniswapPools, uniswapLoading, "Uniswap")}
         </TabsContent>
 
-        <TabsContent value="balancer" className="space-y-6">
-          {balancerLoading ? (
-            <div className="text-center py-8">Loading Balancer pools...</div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filterPools(balancerPools)?.map((pool) => (
-                <PoolCard key={pool.id} pool={pool} />
-              ))}
-            </div>
-          )}
+        <TabsContent value="balancer">
+          {renderPools(balancerPools, balancerLoading, "Balancer")}
         </TabsContent>
 
-        <TabsContent value="uniswap" className="space-y-6">
-          {uniswapLoading ? (
-            <div className="text-center py-8">Loading Uniswap V3 pools...</div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filterPools(uniswapPools)?.map((pool) => (
-                <PoolCard key={pool.id} pool={pool} />
-              ))}
-            </div>
-          )}
+        <TabsContent value="uniswap">
+          {renderPools(uniswapPools, uniswapLoading, "Uniswap")}
         </TabsContent>
       </Tabs>
 
@@ -166,4 +216,4 @@ export default function Pools() {
       />
     </div>
   );
-} 
+}

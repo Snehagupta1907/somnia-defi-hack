@@ -1,11 +1,10 @@
 'use client'
 import { createAppKit } from '@reown/appkit/react'
 import { WagmiProvider } from 'wagmi'
-import { arbitrum, mainnet,somniaTestnet } from '@reown/appkit/networks'
+import { somniaTestnet } from '@reown/appkit/networks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { Toaster } from '@/components/ui/toaster'
-
 const projectId = '684cdccc0de232f65a62603583571f5e'
 // 2. Create a metadata object - optional
 const metadata = {
@@ -14,7 +13,7 @@ const metadata = {
   url: 'https://example.com', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/179229932']
 }
-const networks = [mainnet, arbitrum,somniaTestnet]
+const networks = [somniaTestnet]
 
 // 4. Create Wagmi Adapter
 const wagmiAdapter = new WagmiAdapter({

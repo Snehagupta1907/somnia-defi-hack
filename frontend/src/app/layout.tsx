@@ -4,9 +4,7 @@ import './globals.css'
 import Navigation from '@/components/navigation'
 import Footer from '@/components/footer'
 import AppKitProvider from '@/components/client-providers'
-
 const inter = Inter({ subsets: ['latin'] })
-
 export const metadata: Metadata = {
   title: 'SwapDotSo DEX Platform',
   description: 'A modern decentralized exchange platform',
