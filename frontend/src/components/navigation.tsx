@@ -50,11 +50,10 @@ export default function Navigation() {
             <Link
               key={link.path}
               href={link.path}
-              className={`relative font-medium transition-colors duration-200 ${
-                isActive(link.path)
+              className={`relative font-medium transition-colors duration-200 ${isActive(link.path)
                   ? "text-color-sage"
                   : "text-text-primary hover:text-color-sage"
-              }`}
+                }`}
             >
               {link.label}
               {isActive(link.path) && (
@@ -66,7 +65,7 @@ export default function Navigation() {
 
         {/* Wallet Connect */}
         <div className="hidden md:flex">
-          <ConnectButton />
+          <ConnectButton  />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -112,11 +111,10 @@ export default function Navigation() {
               key={link.path}
               href={link.path}
               onClick={() => setMobileOpen(false)}
-              className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActive(link.path)
+              className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive(link.path)
                   ? "bg-color-sage text-white"
                   : "text-text-primary hover:bg-white/10"
-              }`}
+                }`}
             >
               {link.label}
             </Link>

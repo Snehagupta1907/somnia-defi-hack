@@ -51,7 +51,7 @@ export default function Docs() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto mt-[10%] px-6 py-12">
+    <div className="max-w-7xl font-mono mx-auto mt-[10%] px-6 py-12">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
