@@ -9,8 +9,7 @@ export const tokens = pgTable("tokens", {
   name: text("name").notNull(),
   address: text("address").notNull().unique(),
   decimals: varchar("decimals").notNull(),
-  logoUrl: text("logo_url"),
-  createdAt: timestamp("created_at").default(sql`now()`).notNull(),
+  logoUrl: text("logo_url")
 });
 
 export const pools = pgTable("pools", {
@@ -52,7 +51,6 @@ export const analytics = pgTable("analytics", {
 
 export const insertTokenSchema = createInsertSchema(tokens).omit({
   id: true,
-  createdAt: true,
 });
 
 export const insertPoolSchema = createInsertSchema(pools).omit({

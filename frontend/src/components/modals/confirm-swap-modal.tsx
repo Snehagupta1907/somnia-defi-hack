@@ -1,14 +1,14 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import type { Token } from "@shared/schema";
+
 
 interface ConfirmSwapModalProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  fromToken?: Token;
-  toToken?: Token;
+  fromToken?: any;
+  toToken?: any;
   fromAmount: string;
   toAmount: string;
   rate: number;
@@ -48,9 +48,9 @@ export default function ConfirmSwapModal({
             <span className="text-gray-600">From</span>
             <span className="font-semibold flex items-center gap-2">
               {fromAmount} {fromToken?.symbol}
-              {fromToken?.image && (
+              {fromToken?.logoUrl && (
                 <img
-                  src={fromToken.image}
+                  src={fromToken.logoUrl}
                   alt={fromToken.symbol}
                   className="w-5 h-5 rounded-full shadow"
                 />
@@ -63,9 +63,9 @@ export default function ConfirmSwapModal({
             <span className="text-gray-600">To</span>
             <span className="font-semibold flex items-center gap-2">
               {parseFloat(toAmount).toFixed(4)} {toToken?.symbol}
-              {toToken?.image && (
+              {toToken?.logoUrl && (
                 <img
-                  src={toToken.image}
+                  src={toToken.logoUrl}
                   alt={toToken.symbol}
                   className="w-5 h-5 rounded-full shadow"
                 />

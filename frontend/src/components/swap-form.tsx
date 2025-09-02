@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -16,12 +17,12 @@ import { parseUnits } from "viem";
 import { Switch } from "./ui/switch";
 
 const tokens: Token[] = [
-  { id: "somnia_native", symbol: "STT", name: "Somnia Native Token", address: "0x0000000000000000000000000000000000000000", decimals: 18, image: "https://somnia.exchange/stt-logo.png" },
-  { id: "usdtg", symbol: "USDT Ginger", name: "USDT Ginger", address: "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76", decimals: 18, image: "https://raw.githubusercontent.com/Ensar2318/v2-sdk/refs/heads/main/images/0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76.png" },
-  { id: "wstt", symbol: "WSTT", name: "Wrapped STT", address: "0xF22eF0085f6511f70b01a68F360dCc56261F768a", decimals: 18, image: "https://somnia.exchange/stt-logo.png" },
-  { id: "pumpaz", symbol: "PUMPAZ", name: "PumpAz", address: "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58", decimals: 18, image: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58.jpg" },
-  { id: "nia", symbol: "NIA", name: "Nia Token", address: "0xF2F773753cEbEFaF9b68b841d80C083b18C69311", decimals: 18, image: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xF2F773753cEbEFaF9b68b841d80C083b18C69311.png" },
-  { id: "check", symbol: "CHECK", name: "Check Token", address: "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8", decimals: 18, image: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8.png" },
+  { id: "somnia_native", symbol: "STT", name: "Somnia Native Token", address: "0x0000000000000000000000000000000000000000", decimals: "18", logoUrl: "https://somnia.exchange/stt-logo.png" },
+  { id: "usdtg", symbol: "USDT Ginger", name: "USDT Ginger", address: "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ensar2318/v2-sdk/refs/heads/main/images/0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76.png" },
+  { id: "wstt", symbol: "WSTT", name: "Wrapped STT", address: "0xF22eF0085f6511f70b01a68F360dCc56261F768a", decimals: "18", logoUrl: "https://somnia.exchange/stt-logo.png" },
+  { id: "pumpaz", symbol: "PUMPAZ", name: "PumpAz", address: "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58.jpg" },
+  { id: "nia", symbol: "NIA", name: "Nia Token", address: "0xF2F773753cEbEFaF9b68b841d80C083b18C69311", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xF2F773753cEbEFaF9b68b841d80C083b18C69311.png" },
+  { id: "check", symbol: "CHECK", name: "Check Token", address: "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8.png" },
 ];
 
 export default function SwapForm() {
@@ -44,13 +45,11 @@ export default function SwapForm() {
   const { data: userNativeBalance } = useBalance({ address });
   const { data: fromTokenBalance } = useBalance({
     address,
-    token: fromToken === "somnia_native" ? undefined : tokens.find(t => t.id === fromToken)?.address,
-    watch: true,
+    token: fromToken === "somnia_native" ? undefined : (tokens.find(t => t.id === fromToken)?.address as `0x${string}` | undefined)
   });
   const { data: toTokenBalance } = useBalance({
     address,
-    token: toToken === "somnia_native" ? undefined : tokens.find(t => t.id === toToken)?.address,
-    watch: true,
+    token: toToken === "somnia_native" ? undefined : (tokens.find(t => t.id === toToken)?.address as `0x${string}` | undefined)
   });
 
   const swapMutation = useMutation({
@@ -144,9 +143,11 @@ export default function SwapForm() {
     let fromTokenInfo = tokens.find(t => t.id === fromToken);
     let toTokenInfo = tokens.find(t => t.id === toToken);
     try {
-      await approveToken(fromTokenInfo.address, fromAmount);
-      const txHash = await executeSwap(fromTokenInfo.address, toTokenInfo.address, fromAmount);
+      if (fromTokenInfo?.address && toTokenInfo?.address) {
+      await approveToken(fromTokenInfo?.address, fromAmount);
+      const txHash = await executeSwap(fromTokenInfo?.address, toTokenInfo?.address, fromAmount);
       console.log("✅ Swap sent:", txHash);
+      }
     } catch (err) {
       console.error("❌ Swap failed:", err);
     }
@@ -185,7 +186,7 @@ export default function SwapForm() {
                 {tokens.map(token => (
                   <SelectItem key={token.id} value={token.id}>
                     <div className="flex items-center gap-2">
-                      <img src={token.image} alt={token.symbol} className="w-6 h-6 rounded-full" />
+                      <img src={token.logoUrl || ""} alt={token.symbol} className="w-6 h-6 rounded-full" />
                       <span className="font-medium">{token.symbol}</span>
                     </div>
                   </SelectItem>
@@ -234,7 +235,7 @@ export default function SwapForm() {
                 {tokens.map(token => (
                   <SelectItem key={token.id} value={token.id}>
                     <div className="flex items-center gap-2">
-                      <img src={token.image} alt={token.symbol} className="w-6 h-6 rounded-full" />
+                      <img src={token.logoUrl || ""} alt={token.symbol} className="w-6 h-6 rounded-full" />
                       <span className="font-medium">{token.symbol}</span>
                     </div>
                   </SelectItem>
@@ -328,7 +329,7 @@ export default function SwapForm() {
         >
           <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/80 
                           backdrop-blur border border-gray-200 shadow-inner">
-            <img src={selectedFromToken?.image} alt={selectedFromToken?.symbol} className="w-12 h-12 rounded-full" />
+            <img src={selectedFromToken?.logoUrl || ""} alt={selectedFromToken?.symbol} className="w-12 h-12 rounded-full" />
           </div>
           <div className="flex-1 h-px bg-gray-300"></div>
           <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/80 
@@ -350,7 +351,7 @@ export default function SwapForm() {
           <div className="flex-1 h-px bg-gray-300"></div>
           <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/80 
                           backdrop-blur border border-gray-200 shadow-inner">
-            <img src={selectedToToken?.image} alt={selectedToToken?.symbol} className="w-12 h-12 rounded-full" />
+            <img src={selectedToToken?.logoUrl || ""} alt={selectedToToken?.symbol} className="w-12 h-12 rounded-full" />
           </div>
         </motion.div>
       </motion.div>
