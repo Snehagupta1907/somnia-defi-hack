@@ -54,7 +54,7 @@ export default function PoolCard({ pool }: PoolCardProps) {
     if (!Array.isArray(pool.tokens)) return "Pool";
     
     if (pool.type === "balancer") {
-      const weights = pool.tokens.map(token => token.weight).join("/");
+      const weights = pool.tokens.map((token: any) => token.weight).join("/");
       return `${weights} Weighted`;
     } else {
       return "0.05% Fee Tier";
