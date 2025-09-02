@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { Token } from "@shared/schema";
+import type { Token } from "@/types/schema";
 
 interface CreatePoolModalProps {
   open: boolean;

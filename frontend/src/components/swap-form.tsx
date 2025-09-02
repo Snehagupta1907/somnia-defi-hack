@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SlippageModal from "@/components/modals/slippage-modal";
 import ConfirmSwapModal from "@/components/modals/confirm-swap-modal";
-import type { Token } from "@shared/schema";
+import type { Token } from "@/types/schema";
 import { useToast } from "@/hooks/use-toast";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 import { config, PERMIT2_ABI, SWAP_CONFIG, TokenAbi, RouterAbi, getDeadline } from "@/balancer-config";

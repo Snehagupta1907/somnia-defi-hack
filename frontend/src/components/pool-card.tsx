@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Pool } from "@shared/schema";
+import type { Pool } from "@/types/schema";
 
 interface PoolCardProps {
   pool: Pool;
