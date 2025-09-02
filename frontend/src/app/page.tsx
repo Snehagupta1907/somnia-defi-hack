@@ -25,7 +25,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen font-mono">
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Elements */}

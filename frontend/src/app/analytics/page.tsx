@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { BarChart2, Coins, TrendingUp, PieChart } from "lucide-react";
 import AnalyticsChart from "@/components/analytics-chart";
 
 export default function Analytics() {
@@ -25,59 +26,94 @@ export default function Analytics() {
 
   if (isLoading) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="text-center py-8">Loading analytics...</div>
+      <div className="max-w-6xl mx-auto px-4 py-8 mt-[10%]">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {Array(4).fill(0).map((_, i) => (
+            <div
+              key={i}
+              className="h-24 rounded-xl animate-pulse bg-gray-200/40"
+            />
+          ))}
+        </div>
+        <div className="h-96 rounded-xl mt-8 animate-pulse bg-gray-200/40" />
       </div>
     );
   }
 
+  const statsConfig = [
+    {
+      title: "Total Value Locked",
+      value: `$${parseFloat(stats?.totalValueLocked || 0).toLocaleString()}`,
+      icon: Coins,
+      color: "from-green-400 to-emerald-500",
+    },
+    {
+      title: "24h Volume",
+      value: `$${parseFloat(stats?.volume24h || 0).toLocaleString()}`,
+      icon: BarChart2,
+      color: "from-blue-400 to-indigo-500",
+    },
+    {
+      title: "Active Pools",
+      value: stats?.activePools || 0,
+      icon: PieChart,
+      color: "from-purple-400 to-pink-500",
+    },
+    {
+      title: "Total Fees",
+      value: `$${parseFloat(stats?.totalFees || 0).toLocaleString()}`,
+      icon: TrendingUp,
+      color: "from-yellow-400 to-orange-500",
+    },
+  ];
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 mt-[10%]">
+    <div className="max-w-6xl mx-auto px-4 py-8 font-mono mt-[10%]">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-bold text-center mb-8 text-text-primary"
+        className="text-4xl font-bold text-center mb-12 text-text-primary"
       >
         Platform Analytics
       </motion.h1>
 
       {/* Stats Overview */}
-      {stats && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
-        >
-          <div className="glass-morphism p-6 rounded-xl text-center">
-            <h3 className="text-lg font-semibold text-text-secondary mb-2">Total Value Locked</h3>
-            <p className="text-2xl font-bold text-text-primary">${parseFloat(stats.totalValueLocked).toLocaleString()}</p>
-          </div>
-          <div className="glass-morphism p-6 rounded-xl text-center">
-            <h3 className="text-lg font-semibold text-text-secondary mb-2">24h Volume</h3>
-            <p className="text-2xl font-bold text-text-primary">${parseFloat(stats.volume24h).toLocaleString()}</p>
-          </div>
-          <div className="glass-morphism p-6 rounded-xl text-center">
-            <h3 className="text-lg font-semibold text-text-secondary mb-2">Active Pools</h3>
-            <p className="text-2xl font-bold text-text-primary">{stats.activePools}</p>
-          </div>
-          <div className="glass-morphism p-6 rounded-xl text-center">
-            <h3 className="text-lg font-semibold text-text-secondary mb-2">Total Fees</h3>
-            <p className="text-2xl font-bold text-text-primary">${parseFloat(stats.totalFees).toLocaleString()}</p>
-          </div>
-        </motion.div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {statsConfig.map((stat, i) => (
+          <motion.div
+            key={stat.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.1 }}
+            className=" p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-[1.02] transition-transform"
+          >
+            <div
+              className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center bg-gradient-to-r ${stat.color}`}
+            >
+              <stat.icon className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-sm font-medium text-text-secondary">
+              {stat.title}
+            </h3>
+            <p className="text-2xl font-bold text-text-primary mt-2">
+              {stat.value}
+            </p>
+          </motion.div>
+        ))}
+      </div>
 
       {/* Analytics Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="glass-morphism p-6 rounded-xl"
+        className=" p-6 rounded-2xl shadow-lg"
       >
-        <h2 className="text-xl font-semibold mb-4 text-text-primary">Trading Volume & TVL Trends</h2>
-        <AnalyticsChart 
+        <h2 className="text-xl font-semibold mb-6 text-text-primary">
+          Trading Volume & TVL Trends
+        </h2>
+        <AnalyticsChart
           title="Trading Volume"
           data={analytics || []}
           dataKey="totalVolumeUsd"
@@ -87,4 +123,4 @@ export default function Analytics() {
       </motion.div>
     </div>
   );
-} 
+}

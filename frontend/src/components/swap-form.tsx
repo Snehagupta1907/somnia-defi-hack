@@ -9,21 +9,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SlippageModal from "@/components/modals/slippage-modal";
 import ConfirmSwapModal from "@/components/modals/confirm-swap-modal";
-import type { Token } from "@/types/schema";
+
 import { useToast } from "@/hooks/use-toast";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
-import { config, PERMIT2_ABI, TokenAbi, RouterAbi, getDeadline } from "@/balancer-config";
+import { config, PERMIT2_ABI, TokenAbi, RouterAbi, getDeadline,tokens } from "@/balancer-config";
 import { parseUnits } from "viem";
 import { Switch } from "./ui/switch";
 
-const tokens: Token[] = [
-  { id: "somnia_native", symbol: "STT", name: "Somnia Native Token", address: "0x0000000000000000000000000000000000000000", decimals: "18", logoUrl: "https://somnia.exchange/stt-logo.png", createdAt: new Date() },
-  { id: "usdtg", symbol: "USDT Ginger", name: "USDT Ginger", address: "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ensar2318/v2-sdk/refs/heads/main/images/0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76.png", createdAt: new Date() },
-  { id: "wstt", symbol: "WSTT", name: "Wrapped STT", address: "0xF22eF0085f6511f70b01a68F360dCc56261F768a", decimals: "18", logoUrl: "https://somnia.exchange/stt-logo.png", createdAt: new Date() },
-  { id: "pumpaz", symbol: "PUMPAZ", name: "PumpAz", address: "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58.jpg", createdAt: new Date() },
-  { id: "nia", symbol: "NIA", name: "Nia Token", address: "0xF2F773753cEbEFaF9b68b841d80C083b18C69311", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xF2F773753cEbEFaF9b68b841d80C083b18C69311.png", createdAt: new Date() },
-  { id: "check", symbol: "CHECK", name: "Check Token", address: "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8", decimals: "18", logoUrl: "https://raw.githubusercontent.com/Ginger3Labs/gingerswap-v2sdk/refs/heads/main/images/0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8.png", createdAt: new Date() },
-];
+
 
 export default function SwapForm() {
   const [fromToken, setFromToken] = useState("wstt");

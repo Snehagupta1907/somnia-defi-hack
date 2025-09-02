@@ -33,7 +33,7 @@ export default function AnalyticsChart({ title, data, dataKey, color, loading }:
 
   if (loading) {
     return (
-      <div className="glass-morphism rounded-xl p-6">
+      <div className="rounded-xl p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
           <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>

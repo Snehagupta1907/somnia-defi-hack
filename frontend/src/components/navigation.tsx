@@ -18,6 +18,7 @@ export default function Navigation() {
     { path: "/swap", label: "Swap" },
     { path: "/pools", label: "Pools" },
     { path: "/analytics", label: "Analytics" },
+    { path: "/dashboard", label: "Dashboard" },
     { path: "/docs", label: "Docs" },
   ];
 
@@ -27,11 +28,11 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+    <nav className="fixed top-4 left-1/2 font-mono -translate-x-1/2 z-50">
       <div
         className="flex items-center justify-between px-6 
                    glass-morphism backdrop-blur-xl rounded-3xl shadow-lg 
-                   border border-white/20 max-w-5xl mx-auto w-[90vw]"
+                   border border-white/20 max-w-6xl mx-auto w-[90vw]"
       >
         {/* Logo */}
         <Link href="/" className="flex items-center">
