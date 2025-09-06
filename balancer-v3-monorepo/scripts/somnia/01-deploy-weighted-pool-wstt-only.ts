@@ -8,15 +8,19 @@ function sortAddresses(addresses: string[]): string[] {
   return addresses.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
-// Somnia Token Configuration (WSTT and USDTG only)
+// Somnia Token Configuration (USDTG and PUMPAZ only)
 const SOMNIA_TOKENS = {
   USDTG: "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
-  WSTT: "0xF22eF0085f6511f70b01a68F360dCc56261F768a"
+  WSTT: "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
+  PUMPAZ: "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58",
+  NIA: "0xF2F773753cEbEFaF9b68b841d80C083b18C69311",
+  CHECK: "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8",
+  STT: "0x0000000000000000000000000000000000000000" // Native token (special handling)
 };
 
 // Pool Configuration for Weighted Pool
 const POOL_CONFIG = {
-  name: 'Somnia USDTG-WSTT Weighted Pool',
+  name: 'Somnia USDTG-PUMPAZ Weighted Pool',
   symbol: 'SOMNIA-WP-2T',
   swapFeePercentage: ethers.parseUnits('0.003', 18), // 0.3% - standard for weighted pools
   enableDonation: true,
@@ -25,8 +29,8 @@ const POOL_CONFIG = {
 
 // Weights for the 2 tokens (must sum to 1e18)
 const WEIGHTS = [
-  ethers.parseUnits('0.5', 18),  // USDTG: 50%
-  ethers.parseUnits('0.5', 18)   // WSTT: 50%
+  ethers.parseUnits('0.5', 18),  // PUMPAZ: 50%
+  ethers.parseUnits('0.5', 18)   // USDTG: 50%
 ];
 
 // Verify weights sum to 1e18
@@ -36,7 +40,7 @@ if (totalWeight !== ethers.parseUnits('1', 18)) {
 }
 
 async function main() {
-  console.log('🚀 Step 1: Creating Somnia Weighted Pool (WSTT + USDTG)...');
+  console.log('🚀 Step 1: Creating Somnia Weighted Pool (PUMPAZ + USDTG)...');
   
   const [deployer] = await ethers.getSigners();
   console.log(`📋 Deployer: ${deployer.address}`);
@@ -65,7 +69,7 @@ async function main() {
   // Create sorted token configuration (must be sorted by address)
   const sortedTokens = sortAddresses([
     SOMNIA_TOKENS.USDTG,
-    SOMNIA_TOKENS.WSTT
+    SOMNIA_TOKENS.PUMPAZ
   ]);
   
   console.log(`📋 Sorted token addresses:`, sortedTokens);
@@ -188,7 +192,7 @@ async function main() {
     console.log(`📊 Pool Address: ${poolAddress}`);
     console.log(`🪙 Tokens: ${poolTokens.length}`);
     console.log(`🏭 Factory: ${previousInfo.weightedPoolFactory}`);
-    console.log(`⚖️  Weights: USDTG(50%) WSTT(50%)`);
+    console.log(`⚖️  Weights: USDTG(50%) PUMPAZ(50%)`);
     
     return pool;
     
@@ -202,7 +206,7 @@ async function main() {
       console.log('   - Invalid token configuration');
       console.log('   - Pool already exists');
       console.log('   - Invalid weights configuration');
-      console.log('   - Native token not supported (try using WSTT only)');
+      console.log('   - Native token not supported (try using PUMPAZ only)');
     }
     
     throw error;

@@ -1,11 +1,11 @@
 {
-  "weightedPoolFactory": "0x3bC6E3327A32b09EB47d0D6933100dc2e54FD7ad",
-  "vault": "0xD847c07D1Ae5Ebe202cB54B7152BbeA89d9895aF",
+  "weightedPoolFactory": "0xddf223827D0c769CA06Bc2837dBa86d5677A50e5",
+  "vault": "0x343EE6164822460Fb84065F24C8296AFaeC47a5b",
   "factoryConfig": {
     "factoryVersion": "1.0.0",
     "poolVersion": "1.0.0",
     "pauseWindowDuration": 0
   },
-  "deployer": "0xcfa038455b54714821f291814071161c9870B891",
-  "timestamp": 1755975440939
+  "deployer": "0xdAF0182De86F904918Db8d07c7340A1EfcDF8244",
+  "timestamp": 1757189222860
 }

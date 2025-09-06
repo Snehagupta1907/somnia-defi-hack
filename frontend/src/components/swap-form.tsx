@@ -12,13 +12,15 @@ import ConfirmSwapModal from "@/components/modals/confirm-swap-modal";
 
 import { useToast } from "@/hooks/use-toast";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
-import { config, PERMIT2_ABI, TokenAbi, RouterAbi, getDeadline,tokens } from "@/balancer-config";
+import { config, PERMIT2_ABI, TokenAbi, RouterAbi, getDeadline, tokens } from "@/balancer-config";
 import { parseUnits } from "viem";
 import { Switch } from "./ui/switch";
 
 
 
 export default function SwapForm() {
+
+
   const [fromToken, setFromToken] = useState("wstt");
   const [toToken, setToToken] = useState("usdtg");
   const [fromAmount, setFromAmount] = useState("");
@@ -96,30 +98,48 @@ export default function SwapForm() {
     setToAmount(fromAmount);
   };
 
-  async function approveToken(tokenIn: string, amount: string) {
+  async function approveToken(tokenAddress: string, amount: string) {
     await writeContractAsync({
       abi: TokenAbi,
-      address: tokenIn as `0x${string}`,
+      address: tokenAddress as `0x${string}`,
       functionName: "approve",
-      args: [config?.permit2, parseUnits(amount, 18)],
+      args: [config.permit2, parseUnits(amount, 18)],
     });
+
     await writeContractAsync({
       abi: PERMIT2_ABI,
       address: config.permit2 as `0x${string}`,
       functionName: "approve",
-      args: [tokenIn, config.router, parseUnits(amount, 18), BigInt("281474976710655")],
+      args: [tokenAddress, config.router, parseUnits(amount, 18), BigInt("281474976710655")],
+    });
+  }
+  function findPoolForTokens(tokenA: string, tokenB: string) {
+    return config.pools.find(pool => {
+      const poolTokens = Object.keys(pool.tokens);
+      return poolTokens.includes(tokenA) && poolTokens.includes(tokenB);
     });
   }
 
-  async function executeSwap(tokenIn: string, tokenOut: string, amount: string) {
+  function getTokenAddress(pool: any, token: string) {
+    return pool.tokens[token as keyof typeof pool.tokens];
+  }
+
+  async function executeSwap(fromToken: string, toToken: string, amount: string) {
+    const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toLocaleUpperCase());
+    if (!pool) throw new Error(`No pool found for ${fromToken} ↔ ${toToken}`);
+    console.log(pool,amount,pool.address);
+    const tokenIn = getTokenAddress(pool, fromToken.toUpperCase());
+    const tokenOut = getTokenAddress(pool, toToken.toUpperCase());
+
     const minAmountOut = 0;
     const deadline = getDeadline(1800);
+
     return await writeContractAsync({
       abi: RouterAbi,
       address: config.router as `0x${string}`,
       functionName: "swapSingleTokenExactIn",
       args: [
-        config.somniaWeightedPool,
+        pool.address,         
         tokenIn,
         tokenOut,
         parseUnits(amount, 18),
@@ -133,14 +153,20 @@ export default function SwapForm() {
 
   const handleConfirmSwap = async () => {
     if (!fromAmount || !toAmount) return;
-    let fromTokenInfo = tokens.find(t => t.id === fromToken);
-    let toTokenInfo = tokens.find(t => t.id === toToken);
     try {
-      if (fromTokenInfo?.address && toTokenInfo?.address) {
-      await approveToken(fromTokenInfo?.address, fromAmount);
-      const txHash = await executeSwap(fromTokenInfo?.address, toTokenInfo?.address, fromAmount);
-      console.log("✅ Swap sent:", txHash);
+     
+      const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toLocaleUpperCase());
+      console.log(pool,"pool")
+      if (!pool) {
+        throw new Error("No valid pool found for this swap");
       }
+
+      const fromTokenAddress = getTokenAddress(pool, fromToken.toUpperCase());
+      const toTokenAddress = getTokenAddress(pool, toToken.toLocaleUpperCase());
+      console.log({fromTokenAddress,fromAmount,toTokenAddress});
+      await approveToken(fromTokenAddress, fromAmount);
+      const txHash = await executeSwap(fromToken, toToken, fromAmount);
+      console.log("✅ Swap sent:", txHash);
     } catch (err) {
       console.error("❌ Swap failed:", err);
     }

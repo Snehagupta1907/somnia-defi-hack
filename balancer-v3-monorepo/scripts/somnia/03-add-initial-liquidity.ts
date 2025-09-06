@@ -5,8 +5,8 @@ import * as fs from 'fs';
 
 // Initial liquidity amounts (0.5 of each token)
 const INITIAL_LIQUIDITY = {
-  USDTG: ethers.parseUnits('0.5', 18),  // 0.5 USDTG
-  WSTT: ethers.parseUnits('0.5', 18)    // 0.5 WSTT
+  USDTG: ethers.parseUnits('3', 18),  // 0.5 USDTG
+  PUMPAZ: ethers.parseUnits('3', 18)    // 0.5 WSTT
 };
 
 // Permit2 ABI for token approvals
@@ -50,10 +50,10 @@ async function main() {
   
   // Get token addresses
   const usdtgAddress = poolInfo.somniaTokens.USDTG;
-  const wsttAddress = poolInfo.somniaTokens.WSTT;
+  const pumpazAddress = poolInfo.somniaTokens.PUMPAZ;
   
   console.log(`📋 USDTG Address: ${usdtgAddress}`);
-  console.log(`📋 WSTT Address: ${wsttAddress}`);
+  console.log(`📋 WSTT Address: ${pumpazAddress}`);
   
   // Connect to the pool
   const pool = await ethers.getContractAt('WeightedPool', poolInfo.somniaWeightedPool);
@@ -77,13 +77,13 @@ async function main() {
   console.log(`📋 Pool tokens: ${poolTokens.length}`);
   
   // Create sorted token array for router operations
-  const sortedTokens = [usdtgAddress, wsttAddress].sort();
+  const sortedTokens = [usdtgAddress, pumpazAddress].sort();
   console.log(`📋 Sorted tokens for router: ${sortedTokens}`);
   
   // Create initial balances array (must match sorted token order)
   const initialBalances = sortedTokens.map(token => {
     if (token === usdtgAddress) return INITIAL_LIQUIDITY.USDTG;
-    if (token === wsttAddress) return INITIAL_LIQUIDITY.WSTT;
+    if (token === pumpazAddress) return INITIAL_LIQUIDITY.PUMPAZ;
     return 0n;
   });
   
@@ -126,21 +126,21 @@ async function main() {
     console.log('✅ Permit2 approved to spend USDTG for Router');
     
     // Approve WSTT
-    const wstt = await ethers.getContractAt('IERC20', wsttAddress);
-    console.log('🔐 Approving WSTT for Permit2...');
+    const wstt = await ethers.getContractAt('IERC20', pumpazAddress);
+    console.log('🔐 Approving PUMPAZ for Permit2...');
     const wsttApprovePermit2Tx = await wstt.approve(permit2Address, ethers.MaxUint256);
     await wsttApprovePermit2Tx.wait();
-    console.log('✅ WSTT approved for Permit2');
+    console.log('✅ PUMPAZ approved for Permit2');
     
-    console.log('🔐 Approving Permit2 to spend WSTT for Router...');
+    console.log('🔐 Approving Permit2 to spend PUMPAZ for Router...');
     const wsttApproveRouterTx = await permit2.approve(
-      wsttAddress,
+      pumpazAddress,
       poolInfo.router,
-      INITIAL_LIQUIDITY.WSTT, // Use exactly 0.5 WSTT
+      INITIAL_LIQUIDITY.PUMPAZ, // Use exactly 0.5 WSTT
       MAX_UINT48
     );
     await wsttApproveRouterTx.wait();
-    console.log('✅ Permit2 approved to spend WSTT for Router');
+    console.log('✅ Permit2 approved to spend PUMPAZ for Router');
     
   } catch (error: any) {
     console.error('❌ Error approving tokens:', error);
@@ -211,7 +211,7 @@ async function main() {
       initialLiquidityAdded: true,
       initialLiquidityAmounts: {
         USDTG: INITIAL_LIQUIDITY.USDTG.toString(),
-        WSTT: INITIAL_LIQUIDITY.WSTT.toString()
+        WSTT: INITIAL_LIQUIDITY.PUMPAZ.toString()
       },
       poolInitialized: updatedTotalSupply > 0n,
       timestamp: Date.now()
@@ -223,7 +223,7 @@ async function main() {
     console.log('\n🎉 Initial liquidity added successfully!');
     console.log(`🏊 Pool: ${poolInfo.somniaWeightedPool}`);
     console.log(`💧 USDTG: ${ethers.formatUnits(INITIAL_LIQUIDITY.USDTG, 18)}`);
-    console.log(`💧 WSTT: ${ethers.formatUnits(INITIAL_LIQUIDITY.WSTT, 18)}`);
+    console.log(`💧 WSTT: ${ethers.formatUnits(INITIAL_LIQUIDITY.PUMPAZ, 18)}`);
     console.log(`📊 Pool initialized: ${updatedTotalSupply > 0n}`);
     
   } catch (error: any) {

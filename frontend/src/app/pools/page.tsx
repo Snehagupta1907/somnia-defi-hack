@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
-import { Plus, Search, ArrowUpDown } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,20 +13,22 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PoolCard from "@/components/pool-card";
 import CreatePoolModal from "@/components/modals/create-pool-modal";
+import { config } from "@/balancer-config";
+import AddLiquidityModal from "@/components/modals/add-liquidity-modal";
+import RemoveLiquidityModal from "@/components/modals/remove-liquidity-modal";
 
 interface Pool {
   id: string;
   name: string;
   type: string;
   tokens: Array<{ address: string; weight: number; symbol: string }>;
-  tvl: string;
-  apr: string;
-  volume24h: string;
-  fees24h: string;
-  isActive: boolean;
-  createdAt: Date;
+  tvl?: string;
+  apr?: string;
+  volume24h?: string;
+  fees24h?: string;
+  isActive?: boolean;
+  createdAt?: Date;
 }
 
 export default function Pools() {
@@ -35,24 +36,27 @@ export default function Pools() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedChain, setSelectedChain] = useState("all");
   const [sortBy, setSortBy] = useState("tvl");
-
-  const { data: balancerPools, isLoading: balancerLoading } = useQuery<Pool[]>({
-    queryKey: ["/api/pools", "balancer"],
-    queryFn: async () => {
-      const response = await fetch("/api/pools?type=balancer");
-      if (!response.ok) throw new Error("Failed to fetch Balancer pools");
-      return response.json();
-    },
-  });
-
-  const { data: uniswapPools, isLoading: uniswapLoading } = useQuery<Pool[]>({
-    queryKey: ["/api/pools", "uniswap-v3"],
-    queryFn: async () => {
-      const response = await fetch("/api/pools?type=uniswap-v3");
-      if (!response.ok) throw new Error("Failed to fetch Uniswap V3 pools");
-      return response.json();
-    },
-  });
+  const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
+  const [isAddLiquidityOpen, setIsAddLiquidityOpen] = useState(false);
+  const [isRemoveLiquidityOpen, setIsRemoveLiquidityOpen] = useState(false);
+  // Use pools from config
+  const balancerPools: Pool[] = config.pools.map(pool => ({
+    id: pool.id,
+    name: pool.config.name,
+    address: pool.address,
+    type: "balancer",
+    tokens: Object.entries(pool.tokens).map(([symbol, address]) => ({
+      address,
+      symbol,
+      weight: 50 // placeholder weight if not defined
+    })),
+    tvl: "0",
+    apr: "0",
+    volume24h: "0",
+    fees24h: "0",
+    isActive: pool.poolInitialized,
+    createdAt: new Date()
+  }));
 
   const filterAndSortPools = (pools: Pool[] | undefined) => {
     if (!pools) return [];
@@ -68,7 +72,7 @@ export default function Pools() {
       );
     }
 
-    // Chain filter (placeholder, adapt when pools have chain field)
+    // Chain filter
     if (selectedChain !== "all") {
       filtered = filtered.filter(pool => pool.type.toLowerCase().includes(selectedChain));
     }
@@ -84,34 +88,82 @@ export default function Pools() {
     return filtered;
   };
 
-  const renderPools = (pools: Pool[] | undefined, loading: boolean, label: string) => {
-    if (loading) {
-      return <div className="text-center py-8 text-gray-500">Loading {label} pools...</div>;
-    }
-
+  const renderTable = (pools: Pool[] | undefined, label: string) => {
     const filtered = filterAndSortPools(pools);
     if (!filtered.length) {
-      return <div className="text-center py-8 text-gray-400">No pools found</div>;
+      return (
+        <div className="text-center py-8 text-gray-400">
+          No {label} pools found
+        </div>
+      );
     }
 
     return (
       <motion.div
         layout
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm"
       >
-        {filtered.map((pool, i) => (
-          <motion.div
-            key={pool.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <PoolCard pool={pool} />
-          </motion.div>
-        ))}
+        <table className="w-full text-sm text-left">
+          <thead className="bg-gray-100 text-gray-600">
+            <tr>
+              <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Tokens</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Deployed Url</th>
+              <th className="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((pool, i) => (
+              <motion.tr
+                key={pool.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="border-t hover:bg-gray-50"
+              >
+                <td className="px-4 py-3 font-medium">{pool.name}</td>
+                <td className="px-4 py-3">
+                  {pool.tokens.map(t => t.symbol).join(", ")}
+                </td>
+                <td className="px-4 py-3">
+                  {pool.isActive ? (
+                    <span className="text-green-600 font-medium">Active</span>
+                  ) : (
+                    <span className="text-red-600 font-medium">Inactive</span>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-blue-500 cursor-pointer">
+                  <a
+                    href={`https://shannon-explorer.somnia.network/address/${pool.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Checkout Deployment
+                  </a>
+                </td>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button
+                    onClick={() => { setSelectedPool(pool); setIsAddLiquidityOpen(true); }}
+                    className="px-3 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
+                  >
+                    Add Liquidity
+                  </button>
+                  <button
+                    onClick={() => { setSelectedPool(pool); setIsRemoveLiquidityOpen(true); }}
+                    className="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                  >
+                    Remove Liquidity
+                  </button>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
       </motion.div>
     );
   };
+
 
   return (
     <div className="max-w-7xl mx-auto font-mono px-4 py-8 mt-[10%]">
@@ -129,6 +181,7 @@ export default function Pools() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex gap-4"
         >
           <Button
             onClick={() => setIsCreatePoolModalOpen(true)}
@@ -137,15 +190,16 @@ export default function Pools() {
             <Plus className="w-4 h-4" />
             <span>Create Pool</span>
           </Button>
+
         </motion.div>
       </div>
-      
+
       {/* Search & Filters */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="glass-morphism rounded-xl p-4 mb-8"
+        className="rounded-xl p-4 mb-8"
       >
         <div className="flex flex-col md:flex-row gap-4 items-center">
           {/* Search */}
@@ -169,7 +223,6 @@ export default function Pools() {
               <SelectItem value="all">All Chains</SelectItem>
               <SelectItem value="ethereum">Somnia Testnet</SelectItem>
               <SelectItem value="polygon">Somnia Mainnet</SelectItem>
-       
             </SelectContent>
           </Select>
 
@@ -192,20 +245,20 @@ export default function Pools() {
         <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger value="all">All Pools</TabsTrigger>
           <TabsTrigger value="balancer">Balancer</TabsTrigger>
-          <TabsTrigger value="uniswap">Uniswap V3</TabsTrigger>
+          <TabsTrigger value="uniswap">Uniswap</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
-          {renderPools(balancerPools, balancerLoading, "Balancer")}
-          {renderPools(uniswapPools, uniswapLoading, "Uniswap")}
+          {renderTable(balancerPools, "Balancer")}
+          <div className="mt-6">{renderTable([], "Uniswap")}</div>
         </TabsContent>
 
         <TabsContent value="balancer">
-          {renderPools(balancerPools, balancerLoading, "Balancer")}
+          {renderTable(balancerPools, "Balancer")}
         </TabsContent>
 
         <TabsContent value="uniswap">
-          {renderPools(uniswapPools, uniswapLoading, "Uniswap")}
+          {renderTable([], "Uniswap")}
         </TabsContent>
       </Tabs>
 
@@ -213,6 +266,16 @@ export default function Pools() {
       <CreatePoolModal
         open={isCreatePoolModalOpen}
         onClose={() => setIsCreatePoolModalOpen(false)}
+      />
+      <AddLiquidityModal
+        open={isAddLiquidityOpen}
+        onClose={() => setIsAddLiquidityOpen(false)}
+        pool={selectedPool}
+      />
+      <RemoveLiquidityModal
+        open={isRemoveLiquidityOpen}
+        onClose={() => setIsRemoveLiquidityOpen(false)}
+        pool={selectedPool}
       />
     </div>
   );

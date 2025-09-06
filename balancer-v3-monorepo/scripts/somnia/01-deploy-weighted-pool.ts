@@ -12,7 +12,10 @@ function sortAddresses(addresses: string[]): string[] {
 const SOMNIA_TOKENS = {
   USDTG: "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
   WSTT: "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
-  STT: "0x0000000000000000000000000000000000000000" // Native token address (will be handled specially)
+  PUMPAZ: "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58",
+  NIA: "0xF2F773753cEbEFaF9b68b841d80C083b18C69311",
+  CHECK: "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8",
+  STT: "0x0000000000000000000000000000000000000000" // Native token (special handling)
 };
 
 // Pool Configuration for Weighted Pool

@@ -5,9 +5,7 @@ import '@nomicfoundation/hardhat-ethers';
 import "hardhat-dependency-compiler";
 import '@nomicfoundation/hardhat-chai-matchers';
 import dotenv from 'dotenv';
-
 dotenv.config();
-
 const config: any = {
   solidity: {
     version: '0.8.25',
