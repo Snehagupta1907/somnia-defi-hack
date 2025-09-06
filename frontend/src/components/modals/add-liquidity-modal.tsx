@@ -1,15 +1,15 @@
-"use client";
-
 import { useState, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useReadContracts, useWriteContract } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
-import { TokenAbi } from "@/balancer-config";
+import { TokenAbi,config,PERMIT2_ABI } from "@/balancer-config";
 
 import type { Pool } from "@/types/schema";
+
+const MAX_UINT48 = BigInt("281474976710655");
 
 interface AddLiquidityModalProps {
   open: boolean;
@@ -22,7 +22,9 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
   const [amounts, setAmounts] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
-  // prepare batch contracts for all tokens in pool
+  const { writeContractAsync } = useWriteContract();
+
+  // batch ERC20 balances
   const erc20Contracts =
     pool?.tokens.map((token) => ({
       abi: TokenAbi,
@@ -31,13 +33,11 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
       args: [address!],
     })) ?? [];
 
-  // batch balances
   const { data: balancesData, isLoading } = useReadContracts({
     contracts: erc20Contracts,
     query: { enabled: !!address && !!pool },
   });
 
-  // map balances to { symbol: balance }
   const balances = useMemo(() => {
     if (!balancesData || !pool) return {};
     const map: Record<string, string> = {};
@@ -48,25 +48,67 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
     return map;
   }, [balancesData, pool]);
 
+  // 🔑 handle liquidity
   const handleAddLiquidity = async () => {
     if (!pool) return;
 
-    for (const token of pool.tokens) {
-      const entered = parseFloat(amounts[token.symbol] || "0");
-      const balance = parseFloat(balances[token.symbol] || "0");
-
-      if (entered > balance) {
-        alert(`You don’t have enough ${token.symbol}. Balance: ${balance}`);
-        return;
-      }
-    }
-
     setLoading(true);
+
     try {
-      // TODO: contract call for addLiquidity
-      console.log("Adding liquidity:", amounts);
+      for (const token of pool.tokens) {
+        const entered = amounts[token.symbol] || "0";
+        if (parseFloat(entered) <= 0) continue;
+        console.log(entered,"entered")
+        const parsedAmount = parseUnits(entered, 18);
+        console.log(parsedAmount,"parseAmount")
+        // ✅ Step 1: approve ERC20 → Permit2
+        await writeContractAsync({
+          abi: TokenAbi,
+          address: token.address as `0x${string}`,
+          functionName: "approve",
+          args: [config.permit2, parsedAmount],
+        });
+
+        // ✅ Step 2: approve Permit2 → Router
+        await writeContractAsync({
+          abi: PERMIT2_ABI,
+          address: config.permit2 as `0x${string}`,
+          functionName: "approve",
+          args: [token.address, config.router, parsedAmount, MAX_UINT48],
+        });
+      }
+
+      // ✅ Step 3: call Router.addLiquidityProportional
+      const sortedTokens = pool.tokens.map(t => t.address).sort();
+      const initialBalances = sortedTokens.map(tokenAddr => {
+        const token = pool.tokens.find(t => t.address === tokenAddr)!;
+        return parseUnits(amounts[token.symbol] || "0", token.decimals);
+      });
+
+      await writeContractAsync({
+        abi: [
+          {
+            inputs: [
+              { type: "address", name: "pool" },
+              { type: "uint256[]", name: "maxAmountsIn" },
+              { type: "uint256", name: "minBptAmountOut" },
+              { type: "bool", name: "wethIsEth" },
+              { type: "bytes", name: "userData" },
+            ],
+            name: "addLiquidityProportional",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ],
+        address: config.router as `0x${string}`,
+        functionName: "addLiquidityProportional",
+        args: [pool.address, initialBalances, 0n, false, "0x"],
+      });
+
+      alert("Liquidity added successfully!");
     } catch (err) {
-      console.error("Error adding liquidity", err);
+      console.error("❌ Error adding liquidity", err);
     } finally {
       setLoading(false);
     }
@@ -82,7 +124,7 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
         </DialogHeader>
 
         <div className="space-y-6 mt-6">
-          {pool?.tokens.map((token, idx) => {
+          {pool?.tokens.map((token) => {
             const balance = balances[token.symbol] || "0";
             const entered = amounts[token.symbol] || "";
             const isOverflow = parseFloat(entered || "0") > parseFloat(balance);
