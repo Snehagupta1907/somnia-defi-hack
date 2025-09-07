@@ -16,6 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CreatePoolModal from "@/components/modals/create-pool-modal";
 import { config, TokenAbi } from "@/balancer-config";
+import { uniswapConfig } from "@/uniswap-config";
 import AddLiquidityModal from "@/components/modals/add-liquidity-modal";
 import RemoveLiquidityModal from "@/components/modals/remove-liquidity-modal";
 import { useAccount, useReadContracts } from "wagmi";
@@ -90,6 +91,31 @@ export default function Pools() {
       ? Number(poolBPTBalances[index].result) / 1e18 // assuming 18 decimals
       : 0,
   }));
+
+  const uniswapPools: Pool[] = Object.entries(uniswapConfig.uniswap.pools).map(
+    ([poolName, poolData]) => {
+      const [token0Symbol, token1Symbol] = poolName.split("-");
+      const tokens = [
+        { address: poolData.token0, symbol: token0Symbol.toUpperCase(), weight: 50 },
+        { address: poolData.token1, symbol: token1Symbol.toUpperCase(), weight: 50 },
+      ];
+
+      return {
+        id: poolName,
+        name: poolName,
+        type: "uniswap",
+        tokens,
+        tvl: 0, // optional, can be updated via on-chain calls
+        apr: "0",
+        volume24h: "0",
+        fees24h: "0",
+        isActive: true,
+        createdAt: new Date(poolData.timestamp),
+        bptBalance: 0,
+        slot0: poolData.slot0,
+      };
+    }
+  );
 
 
   const filterAndSortPools = (pools: Pool[] | undefined) => {
@@ -294,7 +320,7 @@ export default function Pools() {
 
         <TabsContent value="all">
           {renderTable(balancerPools, "Balancer")}
-          <div className="mt-6">{renderTable([], "Uniswap")}</div>
+          <div className="mt-6">{renderTable(uniswapPools, "Uniswap")}</div>
         </TabsContent>
 
         <TabsContent value="balancer">
@@ -302,7 +328,7 @@ export default function Pools() {
         </TabsContent>
 
         <TabsContent value="uniswap">
-          {renderTable([], "Uniswap")}
+          {renderTable(uniswapPools, "Uniswap")}
         </TabsContent>
       </Tabs>
 
