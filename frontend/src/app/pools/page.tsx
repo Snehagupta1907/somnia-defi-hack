@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ArrowUp, ArrowDown, Link2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,21 +15,23 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CreatePoolModal from "@/components/modals/create-pool-modal";
-import { config } from "@/balancer-config";
+import { config, TokenAbi } from "@/balancer-config";
 import AddLiquidityModal from "@/components/modals/add-liquidity-modal";
 import RemoveLiquidityModal from "@/components/modals/remove-liquidity-modal";
+import { useAccount, useReadContracts } from "wagmi";
 
 interface Pool {
   id: string;
   name: string;
   type: string;
   tokens: Array<{ address: string; weight: number; symbol: string }>;
-  tvl?: string;
+  tvl?: number;
   apr?: string;
   volume24h?: string;
   fees24h?: string;
   isActive?: boolean;
   createdAt?: Date;
+  bptBalance?: number;
 }
 
 export default function Pools() {
@@ -39,8 +42,32 @@ export default function Pools() {
   const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
   const [isAddLiquidityOpen, setIsAddLiquidityOpen] = useState(false);
   const [isRemoveLiquidityOpen, setIsRemoveLiquidityOpen] = useState(false);
+  const { address } = useAccount();
   // Use pools from config
-  const balancerPools: Pool[] = config.pools.map(pool => ({
+
+
+  const poolContracts = config.pools.map((pool) => ({
+    abi: TokenAbi,
+    address: pool.address as `0x${string}`,
+    functionName: "balanceOf",
+    args: [address!],
+  }));
+
+  const poolTvlContracts = config.pools.map((pool) => ({
+    abi: TokenAbi,
+    address: pool.address as `0x${string}`,
+    functionName: "totalSupply"
+  }));
+
+  const { data: poolTvlBalances, isLoading: pooltvlLoading } = useReadContracts({
+    contracts: poolTvlContracts,
+  });
+
+  const { data: poolBPTBalances, isLoading } = useReadContracts({
+    contracts: poolContracts,
+  });
+
+  const balancerPools: Pool[] = config.pools.map((pool, index) => ({
     id: pool.id,
     name: pool.config.name,
     address: pool.address,
@@ -48,15 +75,22 @@ export default function Pools() {
     tokens: Object.entries(pool.tokens).map(([symbol, address]) => ({
       address,
       symbol,
-      weight: 50 // placeholder weight if not defined
+      weight: 50, // placeholder
     })),
-    tvl: "0",
+    tvl: poolTvlBalances?.[index]?.result
+      ? Number(poolTvlBalances[index].result) / 1e18 // assuming 18 decimals
+      : 0,
     apr: "0",
     volume24h: "0",
     fees24h: "0",
     isActive: pool.poolInitialized,
-    createdAt: new Date()
+    createdAt: new Date(),
+    // 🟢 Attach balance from wagmi response
+    bptBalance: poolBPTBalances?.[index]?.result
+      ? Number(poolBPTBalances[index].result) / 1e18 // assuming 18 decimals
+      : 0,
   }));
+
 
   const filterAndSortPools = (pools: Pool[] | undefined) => {
     if (!pools) return [];
@@ -108,9 +142,11 @@ export default function Pools() {
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Tokens</th>
+              <th className="px-4 py-3">BPT Shares</th>
+              <th className="px-4 py-3">TVL</th>
               <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Deployed Url</th>
               <th className="px-4 py-3 text-right">Actions</th>
+              <th className="px-4 py-3">Deployment</th>
             </tr>
           </thead>
           <tbody>
@@ -127,11 +163,32 @@ export default function Pools() {
                   {pool.tokens.map(t => t.symbol).join(", ")}
                 </td>
                 <td className="px-4 py-3">
+                  {pool.bptBalance?.toFixed(1)} BPT
+                </td>
+                <td className="px-4 py-3">
+                  {pool.tvl?.toFixed(1)} BPT
+                </td>
+                <td className="px-4 py-3">
                   {pool.isActive ? (
                     <span className="text-green-600 font-medium">Active</span>
                   ) : (
                     <span className="text-red-600 font-medium">Inactive</span>
                   )}
+                </td>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button
+                    onClick={() => { setSelectedPool(pool); setIsAddLiquidityOpen(true); }}
+                    className="px-3 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
+                  >
+                    <ArrowUp size={20} />
+
+                  </button>
+                  <button
+                    onClick={() => { setSelectedPool(pool); setIsRemoveLiquidityOpen(true); }}
+                    className="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                  >
+                    <ArrowDown size={20} />
+                  </button>
                 </td>
                 <td className="px-4 py-3 text-blue-500 cursor-pointer">
                   <a
@@ -139,23 +196,10 @@ export default function Pools() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Checkout Deployment
+                    <Link2 size={20} />
                   </a>
                 </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <button
-                    onClick={() => { setSelectedPool(pool); setIsAddLiquidityOpen(true); }}
-                    className="px-3 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
-                  >
-                    Add Liquidity
-                  </button>
-                  <button
-                    onClick={() => { setSelectedPool(pool); setIsRemoveLiquidityOpen(true); }}
-                    className="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600"
-                  >
-                    Remove Liquidity
-                  </button>
-                </td>
+
               </motion.tr>
             ))}
           </tbody>

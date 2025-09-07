@@ -28,7 +28,7 @@ export default function SwapForm() {
   const [slippage, setSlippage] = useState(0.5);
   const [isSlippageModalOpen, setIsSlippageModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [showUniswap, setShowUniswap] = useState(true);
+
   const [routeProvider, setRouteProvider] = useState<"uniswap" | "balancer">(
     "uniswap"
   );
@@ -296,7 +296,7 @@ export default function SwapForm() {
           </div>
           <div className="flex justify-between text-gray-600">
             <span>Network Fee</span>
-            <span className="font-medium text-gray-800">~$12.50</span>
+            <span className="font-medium text-gray-800">~0.3%</span>
           </div>
         </div>
 

@@ -20,7 +20,7 @@ const SOMNIA_TOKENS = {
 
 // Pool Configuration for Weighted Pool
 const POOL_CONFIG = {
-  name: 'Somnia USDTG-PUMPAZ Weighted Pool',
+  name: 'Somnia WSTT-NIA Weighted Pool',
   symbol: 'SOMNIA-WP-2T',
   swapFeePercentage: ethers.parseUnits('0.003', 18), // 0.3% - standard for weighted pools
   enableDonation: true,
@@ -40,7 +40,7 @@ if (totalWeight !== ethers.parseUnits('1', 18)) {
 }
 
 async function main() {
-  console.log('🚀 Step 1: Creating Somnia Weighted Pool (PUMPAZ + USDTG)...');
+  console.log('🚀 Step 1: Creating Somnia Weighted Pool (WSTT + NIA)...');
   
   const [deployer] = await ethers.getSigners();
   console.log(`📋 Deployer: ${deployer.address}`);
@@ -68,8 +68,8 @@ async function main() {
   
   // Create sorted token configuration (must be sorted by address)
   const sortedTokens = sortAddresses([
-    SOMNIA_TOKENS.USDTG,
-    SOMNIA_TOKENS.PUMPAZ
+    SOMNIA_TOKENS.WSTT,
+    SOMNIA_TOKENS.NIA
   ]);
   
   console.log(`📋 Sorted token addresses:`, sortedTokens);

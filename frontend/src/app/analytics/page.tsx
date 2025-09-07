@@ -1,67 +1,50 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
 import { BarChart2, Coins, TrendingUp, PieChart } from "lucide-react";
 import AnalyticsChart from "@/components/analytics-chart";
 
 export default function Analytics() {
-  const { data: analytics, isLoading } = useQuery({
-    queryKey: ["/api/analytics"],
-    queryFn: async () => {
-      const response = await fetch("/api/analytics");
-      if (!response.ok) throw new Error("Failed to fetch analytics");
-      return response.json();
-    },
-  });
+  // ✅ Dummy stats
+  const stats = {
+    totalValueLocked: 1250000,
+    volume24h: 85600,
+    activePools: 3,
+    totalFees: 4300,
+  };
 
-  const { data: stats } = useQuery({
-    queryKey: ["/api/stats"],
-    queryFn: async () => {
-      const response = await fetch("/api/stats");
-      if (!response.ok) throw new Error("Failed to fetch stats");
-      return response.json();
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-8 mt-[10%]">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {Array(4).fill(0).map((_, i) => (
-            <div
-              key={i}
-              className="h-24 rounded-xl animate-pulse bg-gray-200/40"
-            />
-          ))}
-        </div>
-        <div className="h-96 rounded-xl mt-8 animate-pulse bg-gray-200/40" />
-      </div>
-    );
-  }
+  // ✅ Dummy analytics chart data
+  const analytics = [
+    { date: "2025-08-01", totalVolumeUsd: 120000, tvl: 800000 },
+    { date: "2025-08-02", totalVolumeUsd: 150000, tvl: 900000 },
+    { date: "2025-08-03", totalVolumeUsd: 180000, tvl: 1000000 },
+    { date: "2025-08-04", totalVolumeUsd: 140000, tvl: 950000 },
+    { date: "2025-08-05", totalVolumeUsd: 200000, tvl: 1100000 },
+    { date: "2025-08-06", totalVolumeUsd: 220000, tvl: 1250000 },
+  ];
 
   const statsConfig = [
     {
       title: "Total Value Locked",
-      value: `$${parseFloat(stats?.totalValueLocked || 0).toLocaleString()}`,
+      value: `$${parseFloat(stats.totalValueLocked.toString()).toLocaleString()}`,
       icon: Coins,
       color: "from-green-400 to-emerald-500",
     },
     {
       title: "24h Volume",
-      value: `$${parseFloat(stats?.volume24h || 0).toLocaleString()}`,
+      value: `$${parseFloat(stats.volume24h.toString()).toLocaleString()}`,
       icon: BarChart2,
       color: "from-blue-400 to-indigo-500",
     },
     {
       title: "Active Pools",
-      value: stats?.activePools || 0,
+      value: stats.activePools,
       icon: PieChart,
       color: "from-purple-400 to-pink-500",
     },
     {
       title: "Total Fees",
-      value: `$${parseFloat(stats?.totalFees || 0).toLocaleString()}`,
+      value: `$${parseFloat(stats.totalFees.toString()).toLocaleString()}`,
       icon: TrendingUp,
       color: "from-yellow-400 to-orange-500",
     },
@@ -115,10 +98,10 @@ export default function Analytics() {
         </h2>
         <AnalyticsChart
           title="Trading Volume"
-          data={analytics || []}
+          data={analytics}
           dataKey="totalVolumeUsd"
           color="#10B981"
-          loading={isLoading}
+          loading={false}
         />
       </motion.div>
     </div>

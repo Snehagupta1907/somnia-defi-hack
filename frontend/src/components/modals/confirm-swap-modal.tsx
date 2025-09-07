@@ -90,7 +90,7 @@ export default function ConfirmSwapModal({
           {/* Fee */}
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Network Fee</span>
-            <span className="font-medium text-gray-800">~$12.50</span>
+            <span className="font-medium text-gray-800">0.3%</span>
           </div>
         </div>
 

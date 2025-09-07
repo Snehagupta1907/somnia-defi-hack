@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,36 +54,35 @@ export default function RemoveLiquidityModal({ open, onClose, pool }: RemoveLiqu
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="glass-morphism max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold">
-            Remove Liquidity from {pool?.name}
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="p-0 max-w-md rounded-xl overflow-hidden">
+        <Card className="border-none shadow-none">
+          <CardContent className="p-6 space-y-6">
+            <DialogHeader>
+              <DialogTitle className="text-lg font-bold text-center">
+                Remove Liquidity from {pool?.name}
+              </DialogTitle>
+            </DialogHeader>
 
-        <div className="space-y-6 mt-6">
-          <div>
-            <Label className="block text-sm font-medium text-gray-700 mb-2">
-              Percentage to Remove (%)
-            </Label>
-            <Input
-              type="number"
-              value={percentage}
-              onChange={(e) => setPercentage(e.target.value)}
-              min="1"
-              max="100"
-              className="bg-white/80 backdrop-blur border-gray-200"
-            />
-          </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Percentage to Remove (%)</Label>
+              <Input
+                type="number"
+                value={percentage}
+                onChange={(e) => setPercentage(e.target.value)}
+                min="1"
+                max="100"
+              />
+            </div>
 
-          <Button
-            onClick={handleRemoveLiquidity}
-            disabled={removeLiquidityMutation.isPending}
-            className="w-full bg-red-500 text-white py-3 rounded-xl hover:bg-red-600"
-          >
-            {removeLiquidityMutation.isPending ? "Removing..." : "Remove Liquidity"}
-          </Button>
-        </div>
+            <Button
+              onClick={handleRemoveLiquidity}
+              disabled={removeLiquidityMutation.isPending}
+              className="w-full bg-red-500 text-white hover:bg-red-600"
+            >
+              {removeLiquidityMutation.isPending ? "Removing..." : "Remove Liquidity"}
+            </Button>
+          </CardContent>
+        </Card>
       </DialogContent>
     </Dialog>
   );
