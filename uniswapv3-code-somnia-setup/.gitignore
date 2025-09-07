@@ -1,7 +1,0 @@
-.env.local
-.env
-broadcast/
-lib
-cache/
-out/
-__pycache__

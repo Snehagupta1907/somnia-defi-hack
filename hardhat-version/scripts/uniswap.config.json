@@ -1,0 +1,67 @@
+{
+  "network": "somniaTestnet",
+  "uniswap": {
+    "factory": "0x7dB6e3e494415bFE56805a34C125CDCC0A1E01A8",
+    "manager": "0xAB4d81E38425E3a116DDF3C2DFE104050179cfe5",
+    "quoter": "0x9458E3Bff01DA31cf956aE614E7cad98a2418121",
+    "testutils": "0x471D1f68d6A436BD1E5d3A0Fa6C72911614e3A0A"
+  },
+  "pools": {
+    "USDTG-WSTT": {
+      "address": "0xeB9cEBAb8766D9183d4CDbE9B74DB33d5EF6C51f",
+      "token0": "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
+      "token1": "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
+      "fee": 3000,
+      "slot0": {
+        "sqrtPriceX96": "5602277097478613991869082763264",
+        "tick": "85176",
+        "observationIndex": "0",
+        "observationCardinality": "1",
+        "observationCardinalityNext": "1"
+      },
+      "timestamp": 1757269293921
+    },
+    "USDTG-PUMPAZ": {
+      "address": "0xd2aF09aA5541f01C57e65dDf13bCCc29495D1494",
+      "token0": "0xDa4FDE38bE7a2b959BF46E032ECfA21e64019b76",
+      "token1": "0x4eF3C7cd01a7d2FB9E34d6116DdcB9578E8f5d58",
+      "fee": 3000,
+      "slot0": {
+        "sqrtPriceX96": "5602277097478613991869082763264",
+        "tick": "85176",
+        "observationIndex": "0",
+        "observationCardinality": "1",
+        "observationCardinalityNext": "1"
+      },
+      "timestamp": 1757270189490
+    },
+    "WSTT-CHECK": {
+      "address": "0xc9BCE6C6da08A24F681AcB91015A8b7F33c8199D",
+      "token0": "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
+      "token1": "0xA356306eEd1Ec9b1b9cdAed37bb7715787ae08A8",
+      "fee": 3000,
+      "slot0": {
+        "sqrtPriceX96": "5602277097478613991869082763264",
+        "tick": "85176",
+        "observationIndex": "0",
+        "observationCardinality": "1",
+        "observationCardinalityNext": "1"
+      },
+      "timestamp": 1757270311881
+    },
+    "WSTT-NIA": {
+      "address": "0x92AB1c8f76324246BAFADc21b8CFC682B5c3e00c",
+      "token0": "0xF22eF0085f6511f70b01a68F360dCc56261F768a",
+      "token1": "0xF2F773753cEbEFaF9b68b841d80C083b18C69311",
+      "fee": 3000,
+      "slot0": {
+        "sqrtPriceX96": "5602277097478613991869082763264",
+        "tick": "85176",
+        "observationIndex": "0",
+        "observationCardinality": "1",
+        "observationCardinalityNext": "1"
+      },
+      "timestamp": 1757270393567
+    }
+  }
+}
