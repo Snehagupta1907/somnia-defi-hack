@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 
 
 interface ConfirmSwapModalProps {
@@ -49,9 +50,11 @@ export default function ConfirmSwapModal({
             <span className="font-semibold flex items-center gap-2">
               {fromAmount} {fromToken?.symbol}
               {fromToken?.logoUrl && (
-                <img
+                <Image
                   src={fromToken.logoUrl}
                   alt={fromToken.symbol}
+                  width={20}
+                  height={20}
                   className="w-5 h-5 rounded-full shadow"
                 />
               )}
@@ -64,9 +67,11 @@ export default function ConfirmSwapModal({
             <span className="font-semibold flex items-center gap-2">
               {parseFloat(toAmount).toFixed(4)} {toToken?.symbol}
               {toToken?.logoUrl && (
-                <img
+                <Image
                   src={toToken.logoUrl}
                   alt={toToken.symbol}
+                  width={20}
+                  height={20}
                   className="w-5 h-5 rounded-full shadow"
                 />
               )}

@@ -4,6 +4,8 @@ import { motion } from "framer-motion"
 import { Copy } from "lucide-react"
 import { useAccount, useBalance, useReadContracts } from "wagmi"
 import { formatUnits } from "viem"
+import type { Abi } from "viem"
+import Image from "next/image"
 
 import { tokens, TokenAbi } from "@/balancer-config"
 
@@ -18,7 +20,7 @@ export default function Dashboard() {
 
   // ✅ prepare ERC20 balanceOf calls
   const erc20Contracts = erc20Tokens.map((token) => ({
-    abi: TokenAbi,
+    abi: TokenAbi as Abi,
     address: token.address as `0x${string}`,
     functionName: "balanceOf",
     args: [address!],
@@ -126,9 +128,11 @@ export default function Dashboard() {
               {/* ✅ Native SOMI row */}
               <tr className="border-b border-gray-700/40">
                 <td className="py-4 flex items-center gap-3">
-                  <img
+                  <Image
                     src="/somnia-logo.png"
                     alt="SOMI"
+                    width={32}
+                    height={32}
                     className="w-8 h-8 rounded-full"
                   />
                   <div>
@@ -149,7 +153,7 @@ export default function Dashboard() {
                 const rawBalance = balances?.[i]?.result as bigint | undefined
                 const formatted =
                   rawBalance && token.decimals
-                    ? Number(formatUnits(rawBalance, token.decimals)).toFixed(4)
+                    ? Number(formatUnits(rawBalance, Number(token.decimals))).toFixed(4)
                     : "0.0000"
 
                 return (
@@ -158,9 +162,11 @@ export default function Dashboard() {
                     className="border-b border-gray-700/40 last:border-none"
                   >
                     <td className="py-4 flex items-center gap-3">
-                      <img
-                        src={token.logoUrl}
+                      <Image
+                        src={token.logoUrl || "/placeholder-token.png"}
                         alt={token.symbol}
+                        width={32}
+                        height={32}
                         className="w-8 h-8 rounded-full"
                       />
                       <div>

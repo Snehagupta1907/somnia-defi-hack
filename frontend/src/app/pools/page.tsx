@@ -20,18 +20,20 @@ import { uniswapConfig } from "@/uniswap-config";
 import AddLiquidityModal from "@/components/modals/add-liquidity-modal";
 import RemoveLiquidityModal from "@/components/modals/remove-liquidity-modal";
 import { useAccount, useReadContracts } from "wagmi";
+import type { Abi } from "viem";
 
 interface Pool {
   id: string;
   name: string;
   type: string;
+  address: string;
   tokens: Array<{ address: string; weight: number; symbol: string }>;
-  tvl?: number;
-  apr?: string;
-  volume24h?: string;
-  fees24h?: string;
-  isActive?: boolean;
-  createdAt?: Date;
+  tvl: string;
+  apr: string;
+  volume24h: string;
+  fees24h: string;
+  isActive: boolean;
+  createdAt: Date;
   bptBalance?: number;
 }
 
@@ -48,14 +50,14 @@ export default function Pools() {
 
 
   const poolContracts = config.pools.map((pool) => ({
-    abi: TokenAbi,
+    abi: TokenAbi as Abi,
     address: pool.address as `0x${string}`,
     functionName: "balanceOf",
     args: [address!],
   }));
 
   const poolTvlContracts = config.pools.map((pool) => ({
-    abi: TokenAbi,
+    abi: TokenAbi as Abi,
     address: pool.address as `0x${string}`,
     functionName: "totalSupply"
   }));
@@ -79,8 +81,8 @@ export default function Pools() {
       weight: 50, // placeholder
     })),
     tvl: poolTvlBalances?.[index]?.result
-      ? Number(poolTvlBalances[index].result) / 1e18 // assuming 18 decimals
-      : 0,
+      ? (Number(poolTvlBalances[index].result) / 1e18).toString() // assuming 18 decimals
+      : "0",
     apr: "0",
     volume24h: "0",
     fees24h: "0",
@@ -104,8 +106,9 @@ export default function Pools() {
         id: poolName,
         name: poolName,
         type: "uniswap",
+        address: poolData.address,
         tokens,
-        tvl: 0, // optional, can be updated via on-chain calls
+        tvl: "0", // optional, can be updated via on-chain calls
         apr: "0",
         volume24h: "0",
         fees24h: "0",
@@ -192,7 +195,7 @@ export default function Pools() {
                   {pool.bptBalance?.toFixed(1)} BPT
                 </td>
                 <td className="px-4 py-3">
-                  {pool.tvl?.toFixed(1)} BPT
+                  {pool.tvl ? Number(pool.tvl).toFixed(1) : "0"} BPT
                 </td>
                 <td className="px-4 py-3">
                   {pool.isActive ? (

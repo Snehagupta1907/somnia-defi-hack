@@ -13,6 +13,7 @@ export interface Pool {
   id: string;
   name: string;
   type: string; // 'balancer' or 'uniswap-v3'
+  address: string;
   tokens: any; // array of token addresses with weights
   tvl: string;
   apr: string;

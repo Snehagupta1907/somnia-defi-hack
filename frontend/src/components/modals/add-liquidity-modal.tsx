@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAccount, useReadContracts, useWriteContract } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
+import type { Abi } from "viem";
 import { TokenAbi, config, PERMIT2_ABI } from "@/balancer-config";
 
 import type { Pool } from "@/types/schema";
@@ -27,8 +28,8 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
 
   // batch ERC20 balances
   const erc20Contracts =
-    pool?.tokens.map((token) => ({
-      abi: TokenAbi,
+    pool?.tokens.map((token: any) => ({
+      abi: TokenAbi as Abi,
       address: token.address as `0x${string}`,
       functionName: "balanceOf",
       args: [address!],
@@ -42,7 +43,7 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
   const balances = useMemo(() => {
     if (!balancesData || !pool) return {};
     const map: Record<string, string> = {};
-    pool.tokens.forEach((token, i) => {
+    pool.tokens.forEach((token: { symbol: string | number; }, i: number) => {
       const value = balancesData[i]?.result as bigint | undefined;
       map[token.symbol] = value ? formatUnits(value, 18) : "0";
     });
@@ -56,7 +57,7 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
     setLoading(true);
 
     try {
-      for (const token of pool.tokens) {
+      for (const token of pool.tokens as any[]) {
         const entered = amounts[token.symbol] || "0";
         if (parseFloat(entered) <= 0) continue;
 
@@ -80,9 +81,9 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
       }
 
       // ✅ Step 3: call Router.addLiquidityProportional
-      const sortedTokens = pool.tokens.map((t) => t.address).sort();
-      const initialBalances = sortedTokens.map((tokenAddr) => {
-        const token = pool.tokens.find((t) => t.address === tokenAddr)!;
+      const sortedTokens = pool.tokens.map((t: any) => t.address).sort();
+      const initialBalances = sortedTokens.map((tokenAddr: string) => {
+        const token = pool.tokens.find((t: any) => t.address === tokenAddr)!;
         return parseUnits(amounts[token.symbol] || "0", token.decimals);
       });
 
@@ -104,7 +105,7 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
         ],
         address: config.router as `0x${string}`,
         functionName: "addLiquidityProportional",
-        args: [pool.address, initialBalances, 0n, false, "0x"],
+        args: [pool.address as `0x${string}`, initialBalances, BigInt(0), false, "0x"],
       });
 
       alert("✅ Liquidity added successfully!");
@@ -126,7 +127,7 @@ export default function AddLiquidityModal({ open, onClose, pool }: AddLiquidityM
               </DialogTitle>
             </DialogHeader>
 
-            {pool?.tokens.map((token) => {
+            {pool?.tokens.map((token: any) => {
               const balance = balances[token.symbol] || "0";
               const entered = amounts[token.symbol] || "";
               const isOverflow = parseFloat(entered || "0") > parseFloat(balance);
