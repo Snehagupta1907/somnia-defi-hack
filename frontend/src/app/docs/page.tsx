@@ -1,11 +1,13 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { BookOpen, FileText, Code, Users, Shield, Zap, Search } from "lucide-react";
+import { BookOpen, FileText, Code, Users, Shield, Zap, Search, Copy } from "lucide-react";
 import { useState } from "react";
-
+import {config} from "@/balancer-config";
+import { uniswapConfig } from "@/uniswap-config";
 export default function Docs() {
   const [query, setQuery] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const sections = [
     {
@@ -49,6 +51,13 @@ export default function Docs() {
   const filteredSections = sections.filter(section =>
     section.title.toLowerCase().includes(query.toLowerCase())
   );
+
+
+  const copyToClipboard = (value) => {
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="max-w-7xl font-mono mx-auto mt-[10%] px-6 py-12">
@@ -133,6 +142,43 @@ export default function Docs() {
               <p>Execute a token swap</p>
             </div>
           </div>
+        </div>
+      </motion.section>
+
+      {/* Balancer Config Section */}
+      <motion.section id="balancer-config" className="mb-4">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900">
+          Balancer Pools V3 Somnia Testnet Config
+        </h2>
+        <div className="relative glass-morphism p-6 rounded-xl">
+          <button
+            onClick={()=>copyToClipboard(JSON.stringify(config))}
+            className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700"
+          >
+            <Copy className="w-4 h-4" />
+            {copied ? "Copied!" : "Copy"}
+          </button>
+          <pre className="overflow-x-auto text-sm bg-gray-900 text-green-300 p-4 rounded-lg">
+            <code>{JSON.stringify(config,null,2)}</code>
+          </pre>
+        </div>
+      </motion.section>
+
+       <motion.section id="uniswap-config" className="mb-16">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900">
+          Uniswap V3 Somnia Testnet Config
+        </h2>
+        <div className="relative glass-morphism p-6 rounded-xl">
+          <button
+            onClick={()=>copyToClipboard(JSON.stringify(uniswapConfig))}
+            className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700"
+          >
+            <Copy className="w-4 h-4" />
+            {copied ? "Copied!" : "Copy"}
+          </button>
+          <pre className="overflow-x-auto text-sm bg-gray-900 text-green-300 p-4 rounded-lg">
+            <code>{JSON.stringify(uniswapConfig,null,2)}</code>
+          </pre>
         </div>
       </motion.section>
     </div>
