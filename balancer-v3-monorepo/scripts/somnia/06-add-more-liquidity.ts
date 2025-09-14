@@ -66,7 +66,7 @@ async function main() {
   console.log(`📋 Pool token order: ${poolTokens.length} tokens`);
 
   // Decide amounts per token (edit here or use environment variable)
-  const amountPerTokenStr = process.env.AMOUNT_PER_TOKEN || '0.1';
+  const amountPerTokenStr = process.env.AMOUNT_PER_TOKEN || '1';
   const desiredPerToken = ethers.parseUnits(amountPerTokenStr, 18);
   console.log(`📋 Adding ${amountPerTokenStr} of each token`);
 

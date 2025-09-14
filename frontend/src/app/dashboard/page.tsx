@@ -71,8 +71,10 @@ export default function Dashboard() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <h3 className="text-sm text-text-secondary">Portfolio Value</h3>
-          <p className="text-2xl font-bold text-text-primary">$0</p>
-          <p className="text-xs text-text-secondary">Total value</p>
+          <p className="text-2xl font-bold text-text-primary">$ {userNativeBalance?.formatted
+            ? Number(userNativeBalance.formatted*(1.2)).toFixed(2)
+            : "0.00"}{" "}</p>
+          <p className="text-xs text-text-secondary">Real Total value</p>
         </motion.div>
 
         {/* Wallet Info */}
@@ -162,12 +164,10 @@ export default function Dashboard() {
                     className="border-b border-gray-700/40 last:border-none"
                   >
                     <td className="py-4 flex items-center gap-3">
-                      <Image
+                      <img
                         src={token.logoUrl || "/placeholder-token.png"}
                         alt={token.symbol}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 rounded-full"
+                        className="w-6 h-6 rounded-full"
                       />
                       <div>
                         <p className="text-text-primary font-medium">
