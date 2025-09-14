@@ -82,11 +82,10 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
                 onClick={() => setPoolType("balancer")}
                 className="flex items-center gap-2"
               >
-                <Image
+                <img
                   src="https://pbs.twimg.com/profile_images/1948110735919206400/k0A_9Gix_400x400.jpg"
                   alt="Balancer"
-                  width={24}
-                  height={24}
+                
                   className="w-6 h-6 rounded-full"
                 />
                 Balancer
@@ -96,11 +95,10 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
                 onClick={() => setPoolType("uniswap-v3")}
                 className="flex items-center gap-2"
               >
-                <Image
+                <img
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Uniswap_Logo.svg/1200px-Uniswap_Logo.svg.png"
                   alt="Uniswap"
-                  width={24}
-                  height={24}
+                
                   className="w-6 h-6 rounded-full"
                 />
                 Uniswap V3
@@ -115,11 +113,10 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
               <SelectTrigger>
                 {tokenA ? (
                   <div className="flex items-center gap-2">
-                    <Image
+                    <img
                       src={tokens.find(t => t.id === tokenA)?.logoUrl || "/placeholder-token.png"}
                       alt={tokens.find(t => t.id === tokenA)?.symbol || "Token"}
-                      width={20}
-                      height={20}
+                    
                       className="w-5 h-5 rounded-full"
                     />
                     <span>{tokens.find(t => t.id === tokenA)?.symbol}</span>
@@ -132,7 +129,7 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
                 {tokens.map((token) => (
                   <SelectItem key={token.id} value={token.id}>
                     <div className="flex items-center gap-2">
-                      <Image src={token.logoUrl || "/placeholder-token.png"} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
+                      <img src={token.logoUrl || "/placeholder-token.png"} alt={token.symbol} className="w-5 h-5 rounded-full" />
                       <span>{token.symbol} - {token.name}</span>
                     </div>
                   </SelectItem>
@@ -148,11 +145,10 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
               <SelectTrigger>
                 {tokenB ? (
                   <div className="flex items-center gap-2">
-                    <Image
+                    <img
                       src={tokens.find(t => t.id === tokenB)?.logoUrl || "/placeholder-token.png"}
                       alt={tokens.find(t => t.id === tokenB)?.symbol || "Token"}
-                      width={20}
-                      height={20}
+                   
                       className="w-5 h-5 rounded-full"
                     />
                     <span>{tokens.find(t => t.id === tokenB)?.symbol}</span>
@@ -165,7 +161,7 @@ export default function CreatePoolModal({ open, onClose }: CreatePoolModalProps)
                 {tokens.filter(t => t.id !== tokenA).map((token) => (
                   <SelectItem key={token.id} value={token.id}>
                     <div className="flex items-center gap-2">
-                      <Image src={token.logoUrl || "/placeholder-token.png"} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
+                      <img src={token.logoUrl || "/placeholder-token.png"} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
                       <span>{token.symbol} - {token.name}</span>
                     </div>
                   </SelectItem>

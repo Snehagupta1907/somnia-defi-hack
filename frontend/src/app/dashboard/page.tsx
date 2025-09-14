@@ -6,7 +6,7 @@ import { useAccount, useBalance, useReadContracts } from "wagmi"
 import { formatUnits } from "viem"
 import type { Abi } from "viem"
 import Image from "next/image"
-
+import { useToast } from "@/hooks/use-toast";
 import { tokens, TokenAbi } from "@/balancer-config"
 
 export default function Dashboard() {
@@ -130,11 +130,10 @@ export default function Dashboard() {
               {/* ✅ Native SOMI row */}
               <tr className="border-b border-gray-700/40">
                 <td className="py-4 flex items-center gap-3">
-                  <Image
+                  <img
                     src="/somnia-logo.png"
                     alt="SOMI"
-                    width={32}
-                    height={32}
+                  
                     className="w-8 h-8 rounded-full"
                   />
                   <div>

@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
 import { motion } from "framer-motion";
-import { BarChart2, Coins, TrendingUp, PieChart } from "lucide-react";
+import { Coins, BarChart2, PieChart, TrendingUp } from "lucide-react";
 import AnalyticsChart from "@/components/analytics-chart";
 
 export default function Analytics() {
-  // ✅ Dummy stats
+  // Dummy stats
   const stats = {
     totalValueLocked: 1250000,
     volume24h: 85600,
@@ -13,7 +13,7 @@ export default function Analytics() {
     totalFees: 4300,
   };
 
-  // ✅ Dummy analytics chart data
+  // Dummy analytics chart data
   const analytics = [
     { date: "2025-08-01", totalVolumeUsd: 120000, tvl: 800000 },
     { date: "2025-08-02", totalVolumeUsd: 150000, tvl: 900000 },
@@ -26,13 +26,13 @@ export default function Analytics() {
   const statsConfig = [
     {
       title: "Total Value Locked",
-      value: `$${parseFloat(stats.totalValueLocked.toString()).toLocaleString()}`,
+      value: `$${stats.totalValueLocked.toLocaleString()}`,
       icon: Coins,
       color: "from-green-400 to-emerald-500",
     },
     {
       title: "24h Volume",
-      value: `$${parseFloat(stats.volume24h.toString()).toLocaleString()}`,
+      value: `$${stats.volume24h.toLocaleString()}`,
       icon: BarChart2,
       color: "from-blue-400 to-indigo-500",
     },
@@ -44,7 +44,7 @@ export default function Analytics() {
     },
     {
       title: "Total Fees",
-      value: `$${parseFloat(stats.totalFees.toString()).toLocaleString()}`,
+      value: `$${stats.totalFees.toLocaleString()}`,
       icon: TrendingUp,
       color: "from-yellow-400 to-orange-500",
     },
@@ -52,6 +52,7 @@ export default function Analytics() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 font-mono mt-[10%]">
+      {/* Title */}
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -69,7 +70,7 @@ export default function Analytics() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: i * 0.1 }}
-            className=" p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-[1.02] transition-transform"
+            className="p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-[1.02] transition-transform"
           >
             <div
               className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center bg-gradient-to-r ${stat.color}`}
@@ -86,21 +87,26 @@ export default function Analytics() {
         ))}
       </div>
 
-      {/* Analytics Chart */}
+      {/* Two Line Graphs */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className=" p-6 rounded-2xl shadow-lg"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        <h2 className="text-xl font-semibold mb-6 text-text-primary">
-          Trading Volume & TVL Trends
-        </h2>
         <AnalyticsChart
-          title="Trading Volume"
+          title="Balancer Pools – TVL Trends"
+          data={analytics}
+          dataKey="tvl"
+          color="#6366F1"
+          loading={false}
+        />
+
+        <AnalyticsChart
+          title="Uniswap Pools – Trading Volume"
           data={analytics}
           dataKey="totalVolumeUsd"
-          color="#10B981"
+          color="#F59E0B"
           loading={false}
         />
       </motion.div>

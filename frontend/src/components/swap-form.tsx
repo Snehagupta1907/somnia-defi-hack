@@ -10,12 +10,12 @@ import { Label } from "@/components/ui/label";
 import SlippageModal from "@/components/modals/slippage-modal";
 import ConfirmSwapModal from "@/components/modals/confirm-swap-modal";
 
-import { useToast } from "@/hooks/use-toast";
+
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 import { config, PERMIT2_ABI, TokenAbi, RouterAbi, getDeadline, tokens } from "@/balancer-config";
 import { parseUnits } from "viem";
 import { Switch } from "./ui/switch";
-
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function SwapForm() {
@@ -99,19 +99,39 @@ export default function SwapForm() {
   };
 
   async function approveToken(tokenAddress: string, amount: string) {
-    await writeContractAsync({
-      abi: TokenAbi,
-      address: tokenAddress as `0x${string}`,
-      functionName: "approve",
-      args: [config.permit2, parseUnits(amount, 18)],
-    });
+    try {
+      toast({
+        title: "Approving Token",
+        description: `Approving ${amount} tokens for spending...`,
+      });
 
-    await writeContractAsync({
-      abi: PERMIT2_ABI,
-      address: config.permit2 as `0x${string}`,
-      functionName: "approve",
-      args: [tokenAddress, config.router, parseUnits(amount, 18), BigInt("281474976710655")],
-    });
+      await writeContractAsync({
+        abi: TokenAbi,
+        address: tokenAddress as `0x${string}`,
+        functionName: "approve",
+        args: [config.permit2, parseUnits(amount, 18)],
+      });
+
+      await writeContractAsync({
+        abi: PERMIT2_ABI,
+        address: config.permit2 as `0x${string}`,
+        functionName: "approve",
+        args: [tokenAddress, config.router, parseUnits(amount, 18), BigInt("281474976710655")],
+      });
+
+      toast({
+        title: "Approval Successful",
+        description: `${amount} tokens approved for router.`,
+      });
+    } catch (err) {
+      console.error("Approval failed:", err);
+      toast({
+        title: "Approval Failed",
+        description: "Could not approve tokens. Please try again.",
+        variant: "destructive",
+      });
+      throw err;
+    }
   }
   function findPoolForTokens(tokenA: string, tokenB: string) {
     return config.pools.find(pool => {
@@ -125,50 +145,92 @@ export default function SwapForm() {
   }
 
   async function executeSwap(fromToken: string, toToken: string, amount: string) {
-    const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toLocaleUpperCase());
-    if (!pool) throw new Error(`No pool found for ${fromToken} ↔ ${toToken}`);
-    console.log(pool,amount,pool.address);
-    const tokenIn = getTokenAddress(pool, fromToken.toUpperCase());
-    const tokenOut = getTokenAddress(pool, toToken.toUpperCase());
+    try {
+      toast({
+        title: "Executing Swap",
+        description: `Swapping ${amount} ${fromToken} → ${toToken}...`,
+      });
 
-    const minAmountOut = 0;
-    const deadline = getDeadline(1800);
+      const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toUpperCase());
+      if (!pool) throw new Error(`No pool found for ${fromToken} ↔ ${toToken}`);
 
-    return await writeContractAsync({
-      abi: RouterAbi,
-      address: config.router as `0x${string}`,
-      functionName: "swapSingleTokenExactIn",
-      args: [
-        pool.address,         
-        tokenIn,
-        tokenOut,
-        parseUnits(amount, 18),
-        minAmountOut,
-        deadline,
-        false,
-        "0x",
-      ],
-    });
+      const tokenIn = getTokenAddress(pool, fromToken.toUpperCase());
+      const tokenOut = getTokenAddress(pool, toToken.toUpperCase());
+
+      const minAmountOut = 0;
+      const deadline = getDeadline(1800);
+
+      const tx = await writeContractAsync({
+        abi: RouterAbi,
+        address: config.router as `0x${string}`,
+        functionName: "swapSingleTokenExactIn",
+        args: [
+          pool.address,
+          tokenIn,
+          tokenOut,
+          parseUnits(amount, 18),
+          minAmountOut,
+          deadline,
+          false,
+          "0x",
+        ],
+      });
+
+      toast({
+        title: "Swap Submitted",
+        description: "Transaction sent. Waiting for confirmation...",
+      });
+
+      return tx;
+    } catch (err) {
+      console.error("Swap execution failed:", err);
+      toast({
+        title: "Swap Failed",
+        description: "There was an error executing the swap.",
+        variant: "destructive",
+      });
+      throw err;
+    }
   }
 
   const handleConfirmSwap = async () => {
-    if (!fromAmount || !toAmount) return;
+    if (!fromAmount || !toAmount) {
+      toast({
+        title: "Invalid Input",
+        description: "Please enter valid amounts before swapping.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-     
-      const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toLocaleUpperCase());
-      console.log(pool,"pool")
-      if (!pool) {
-        throw new Error("No valid pool found for this swap");
-      }
+      toast({
+        title: "Preparing Swap",
+        description: "Checking pool and approvals...",
+      });
+
+      const pool = findPoolForTokens(fromToken.toUpperCase(), toToken.toUpperCase());
+      if (!pool) throw new Error("No valid pool found for this swap");
 
       const fromTokenAddress = getTokenAddress(pool, fromToken.toUpperCase());
-      const toTokenAddress = getTokenAddress(pool, toToken.toLocaleUpperCase());
-      console.log({fromTokenAddress,fromAmount,toTokenAddress});
+      const toTokenAddress = getTokenAddress(pool, toToken.toUpperCase());
+
       await approveToken(fromTokenAddress, fromAmount);
       const txHash = await executeSwap(fromToken, toToken, fromAmount);
+
+      toast({
+        title: "Swap Successful",
+        description: `Transaction sent successfully! Hash: ${txHash}`,
+      });
+
       console.log("✅ Swap sent:", txHash);
     } catch (err) {
       console.error("❌ Swap failed:", err);
+      toast({
+        title: "Swap Failed",
+        description: "Your swap could not be processed. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
