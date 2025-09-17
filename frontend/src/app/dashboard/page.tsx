@@ -72,7 +72,7 @@ export default function Dashboard() {
         >
           <h3 className="text-sm text-text-secondary">Portfolio Value</h3>
           <p className="text-2xl font-bold text-text-primary">$ {userNativeBalance?.formatted
-            ? Number(userNativeBalance.formatted*(1.2)).toFixed(2)
+            ? (Number(userNativeBalance.formatted) * 1.2).toFixed(2)
             : "0.00"}{" "}</p>
           <p className="text-xs text-text-secondary">Real Total value</p>
         </motion.div>

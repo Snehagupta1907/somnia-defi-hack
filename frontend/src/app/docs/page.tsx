@@ -53,7 +53,7 @@ export default function Docs() {
   );
 
 
-  const copyToClipboard = (value) => {
+  const copyToClipboard = (value: string) => {
     navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

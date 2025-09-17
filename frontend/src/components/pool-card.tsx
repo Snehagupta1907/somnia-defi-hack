@@ -6,7 +6,6 @@ import type { Pool } from "@/types/schema";
 interface PoolCardProps {
   pool: Pool;
 }
-
 export default function PoolCard({ pool }: PoolCardProps) {
   const formatCurrency = (value: string) => {
     const num = parseFloat(value);
